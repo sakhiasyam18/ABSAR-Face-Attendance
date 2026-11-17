@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, status, UploadFile, File, Form, Query
 from sqlalchemy.orm import Session
 from typing import List
 import re
+import cv2
 import numpy as np
 
 from app.database import get_db
@@ -61,20 +62,29 @@ async def register_faces(
         content = await file.read()
         bgr_image, _ = load_for_recognition(content, settings.max_image_side)
         
-        # 1. Coba deteksi orientasi normal
+        # 1. Coba deteksi orientasi normal (threshold 0.25 untuk pose bersudut)
         faces = face_engine.face_app_instance.analyze(bgr_image)
-        valid_faces = [f for f in faces if f.det_score >= 0.35]
+        valid_faces = [f for f in faces if f.det_score >= 0.25]
         
         # 2. Jika tidak terdeteksi, coba otomatis rotasi (90°, 180°, 270°) jika sensor kamera HP menyimpan foto miring
         if len(valid_faces) == 0:
             for rot_k in [1, 2, 3]: # 90, 180, 270 derajat
                 rotated_img = np.ascontiguousarray(np.rot90(bgr_image, rot_k))
                 r_faces = face_engine.face_app_instance.analyze(rotated_img)
-                r_valid = [f for f in r_faces if f.det_score >= 0.35]
+                r_valid = [f for f in r_faces if f.det_score >= 0.25]
                 if len(r_valid) >= 1:
                     valid_faces = r_valid
                     print(f"[REGISTRATION AUTO-ROTATE] Sukses mendeteksi wajah pada foto {index+1} ({labels[index]}) dengan rotasi {rot_k * 90}°")
                     break
+
+        # 3. Jika masih belum terdeteksi, coba flip horizontal (cermin kamera depan)
+        if len(valid_faces) == 0:
+            flipped_img = cv2.flip(bgr_image, 1)
+            f_faces = face_engine.face_app_instance.analyze(flipped_img)
+            f_valid = [f for f in f_faces if f.det_score >= 0.25]
+            if len(f_valid) >= 1:
+                valid_faces = f_valid
+                print(f"[REGISTRATION AUTO-FLIP] Sukses mendeteksi wajah pada foto {index+1} ({labels[index]}) dengan flip cermin")
 
         # Ambil wajah terbesar jika ada beberapa deteksi kecil di latar belakang
         if len(valid_faces) >= 1:

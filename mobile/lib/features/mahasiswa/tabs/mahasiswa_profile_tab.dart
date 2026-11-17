@@ -43,7 +43,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
             children: [
               _buildHeader(),
               const SizedBox(height: 20),
-              _buildProfileHeaderCard(name, nim, isFaceRegistered: isFaceRegistered),
+              _buildProfileHeaderCard(context, ref, user, name, nim, isFaceRegistered: isFaceRegistered),
               const SizedBox(height: 24),
               _buildSectionTitle('Menu Profile'),
               const SizedBox(height: 12),
@@ -93,7 +93,14 @@ class MahasiswaProfileTab extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfileHeaderCard(String name, String nim, {required bool isFaceRegistered}) {
+  Widget _buildProfileHeaderCard(
+    BuildContext context,
+    WidgetRef ref,
+    dynamic user,
+    String name,
+    String nim, {
+    required bool isFaceRegistered,
+  }) {
     return LuxuryCard(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -155,9 +162,69 @@ class MahasiswaProfileTab extends ConsumerWidget {
               StatusBadge(status: isFaceRegistered ? 'terdaftar' : 'belum'),
             ],
           ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isFaceRegistered ? AppColors.cardSurface : AppColors.primary,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 13),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: isFaceRegistered
+                      ? BorderSide(color: AppColors.primary.withValues(alpha: 0.5), width: 1.2)
+                      : BorderSide.none,
+                ),
+                elevation: isFaceRegistered ? 0 : 3,
+              ),
+              icon: Icon(
+                isFaceRegistered ? Icons.refresh_rounded : Icons.face_retouching_natural_rounded,
+                size: 20,
+              ),
+              label: Text(
+                isFaceRegistered ? 'Perbarui / Update Wajah' : 'Daftarkan Wajah Sekarang',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13.5),
+              ),
+              onPressed: () => _navigateToFaceRegistration(context, ref, user),
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _navigateToFaceRegistration(BuildContext context, WidgetRef ref, dynamic user) async {
+    final nim = user?.identifier?.toString().trim() ?? '';
+    if (nim.isEmpty || nim == '-') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('NIM mahasiswa belum diatur di akun Anda.')),
+      );
+      return;
+    }
+    try {
+      final dio = ref.read(apiClientProvider);
+      final res = await dio.get('/students/lookup', queryParameters: {'nim': nim});
+      final studentId = res.data['id'] as int;
+      final studentName = (res.data['full_name'] ?? user?.fullName ?? 'Mahasiswa').toString();
+      final hasFaces = res.data['has_faces'] == true || res.data['has_faces'] == 1;
+
+      if (!context.mounted) return;
+      context.push(
+        '/register/capture',
+        extra: {
+          'student_id': studentId,
+          'student_name': studentName,
+          'nim': nim,
+          'overwrite': hasFaces,
+        },
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal menyiapkan registrasi wajah: $e')),
+      );
+    }
   }
 
   Widget _buildSectionTitle(String title) {

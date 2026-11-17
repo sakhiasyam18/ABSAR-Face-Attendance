@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
@@ -94,37 +96,34 @@ final List<PoseTarget> kPoseTargets = [
     instruction: 'Posisikan wajah lurus menghadap kamera',
     icon: Icons.face,
     directionIcon: Icons.center_focus_strong,
-    targetXText: '±15°',
-    targetYText: '±15°',
-    targetZText: 'Roll ±18° | Jarak ≥18%',
+    targetXText: '±18°',
+    targetYText: '±18°',
+    targetZText: 'Roll ±20° | Jarak Pas',
     checkX: (pitch) {
       final p = pitch.abs();
-      if (p <= 15) return AxisState.pass;
-      if (p <= 24) return AxisState.warn;
+      if (p <= 18) return AxisState.pass;
+      if (p <= 26) return AxisState.warn;
       return AxisState.fail;
     },
     checkY: (yaw) {
       final y = yaw.abs();
-      if (y <= 15) return AxisState.pass;
-      if (y <= 24) return AxisState.warn;
+      if (y <= 18) return AxisState.pass;
+      if (y <= 26) return AxisState.warn;
       return AxisState.fail;
     },
     checkZ: (roll, dist) {
-      if (roll.abs() <= 18 && dist >= 0.18) return AxisState.pass;
-      if (roll.abs() <= 28 && dist >= 0.12) return AxisState.warn;
+      if (roll.abs() <= 20 && dist >= 0.10 && dist <= 0.65) return AxisState.pass;
+      if (roll.abs() <= 28 && dist >= 0.07 && dist <= 0.72) return AxisState.warn;
       return AxisState.fail;
     },
     dynamicGuide: (yaw, pitch, roll, dist, stateX, stateY, stateZ) {
-      if (dist < 0.14) return 'Dekatkan wajah sedikit ke kamera 📱';
-      if (roll.abs() > 22) return 'Tegakkan posisi kepala (jangan miring) ⚖️';
-      if (stateX == AxisState.fail) {
-        return pitch > 15 ? 'Tundukkan kepala sedikit ⬇️' : 'Angkat dagu sedikit ⬆️';
-      }
-      if (stateY == AxisState.fail) {
-        return yaw > 15
-            ? 'Luruskan ke tengah (kurangi ke kanan) ⬅️'
-            : 'Luruskan ke tengah (kurangi ke kiri) ➡️';
-      }
+      if (dist < 0.09) return 'Wajah kurang maju! Dekatkan HP ke wajah 📱';
+      if (dist > 0.58) return 'Wajah terlalu dekat! Mundurkan sedikit HP 📱';
+      if (roll.abs() > 20) return 'Kepala miring! Tegakkan posisi kepala ⚖️';
+      if (pitch > 18) return 'Terlalu mendongak! Tundukkan kepala sedikit ⬇️';
+      if (pitch < -18) return 'Terlalu menunduk! Angkat dagu sedikit ⬆️';
+      if (yaw > 18) return 'Terlalu ke kanan! Tengok ke tengah ⬅️';
+      if (yaw < -18) return 'Terlalu ke kiri! Tengok ke tengah ➡️';
       if (stateX == AxisState.warn || stateY == AxisState.warn) {
         return 'Sedikit lagi! Luruskan pandangan tepat ke tengah';
       }
@@ -137,34 +136,36 @@ final List<PoseTarget> kPoseTargets = [
     instruction: 'Tengokkan kepala sedikit ke kiri',
     icon: Icons.turn_left,
     directionIcon: Icons.arrow_circle_left_rounded,
-    targetXText: '±20°',
-    targetYText: '10° s/d 42° (Kiri)',
-    targetZText: 'Roll ±20° | Jarak ≥18%',
+    targetXText: '±24°',
+    targetYText: '8° s/d 45° (Kiri)',
+    targetZText: 'Roll ±22° | Jarak Pas',
     checkX: (pitch) {
       final p = pitch.abs();
-      if (p <= 20) return AxisState.pass;
-      if (p <= 28) return AxisState.warn;
+      if (p <= 24) return AxisState.pass;
+      if (p <= 32) return AxisState.warn;
       return AxisState.fail;
     },
     checkY: (yaw) {
       final absY = yaw.abs();
-      if (absY >= 10 && absY <= 42) return AxisState.pass;
-      if ((absY >= 4 && absY < 10) || (absY > 42 && absY <= 50)) return AxisState.warn;
+      if (absY >= 8 && absY <= 45) return AxisState.pass;
+      if ((absY >= 4 && absY < 8) || (absY > 45 && absY <= 55)) return AxisState.warn;
       return AxisState.fail;
     },
     checkZ: (roll, dist) {
-      if (roll.abs() <= 20 && dist >= 0.18) return AxisState.pass;
-      if (roll.abs() <= 28 && dist >= 0.12) return AxisState.warn;
+      if (roll.abs() <= 22 && dist >= 0.10 && dist <= 0.65) return AxisState.pass;
+      if (roll.abs() <= 30 && dist >= 0.07 && dist <= 0.72) return AxisState.warn;
       return AxisState.fail;
     },
     dynamicGuide: (yaw, pitch, roll, dist, stateX, stateY, stateZ) {
-      if (dist < 0.14) return 'Dekatkan wajah sedikit ke kamera 📱';
+      if (dist < 0.09) return 'Wajah kurang maju! Dekatkan HP ke wajah 📱';
+      if (dist > 0.58) return 'Wajah terlalu dekat! Mundurkan sedikit HP 📱';
+      if (roll.abs() > 22) return 'Tegakkan posisi kepala (jangan miring) ⚖️';
       final absY = yaw.abs();
-      if (absY < 5) return 'Tengokkan kepala ke KIRI ⬅️';
-      if (absY < 10) return 'Tengok ke KIRI sedikit lagi ⬅️';
-      if (absY > 42) return 'Kurangi tengokan ke kiri (sedikit ke tengah) ➡️';
+      if (absY < 5) return 'Kurang menoleh! Tengokkan kepala ke KIRI ⬅️';
+      if (absY < 8) return 'Sedikit lagi! Tengok ke KIRI sedikit lagi ⬅️';
+      if (absY > 45) return 'Terlalu menoleh ke kiri! Kurangi sedikit ke kanan ➡️';
       if (stateX != AxisState.pass) {
-        return pitch > 20 ? 'Tundukkan kepala sedikit ⬇️' : 'Angkat dagu sedikit ⬆️';
+        return pitch > 24 ? 'Tundukkan kepala sedikit ⬇️' : 'Angkat dagu sedikit ⬆️';
       }
       return 'POSISI PAS! Tahan posisi tengok kiri... 🔒';
     },
@@ -175,34 +176,36 @@ final List<PoseTarget> kPoseTargets = [
     instruction: 'Tengokkan kepala sedikit ke kanan',
     icon: Icons.turn_right,
     directionIcon: Icons.arrow_circle_right_rounded,
-    targetXText: '±20°',
-    targetYText: '10° s/d 42° (Kanan)',
-    targetZText: 'Roll ±20° | Jarak ≥18%',
+    targetXText: '±24°',
+    targetYText: '8° s/d 45° (Kanan)',
+    targetZText: 'Roll ±22° | Jarak Pas',
     checkX: (pitch) {
       final p = pitch.abs();
-      if (p <= 20) return AxisState.pass;
-      if (p <= 28) return AxisState.warn;
+      if (p <= 24) return AxisState.pass;
+      if (p <= 32) return AxisState.warn;
       return AxisState.fail;
     },
     checkY: (yaw) {
       final absY = yaw.abs();
-      if (absY >= 10 && absY <= 42) return AxisState.pass;
-      if ((absY >= 4 && absY < 10) || (absY > 42 && absY <= 50)) return AxisState.warn;
+      if (absY >= 8 && absY <= 45) return AxisState.pass;
+      if ((absY >= 4 && absY < 8) || (absY > 45 && absY <= 55)) return AxisState.warn;
       return AxisState.fail;
     },
     checkZ: (roll, dist) {
-      if (roll.abs() <= 20 && dist >= 0.18) return AxisState.pass;
-      if (roll.abs() <= 28 && dist >= 0.12) return AxisState.warn;
+      if (roll.abs() <= 22 && dist >= 0.10 && dist <= 0.65) return AxisState.pass;
+      if (roll.abs() <= 30 && dist >= 0.07 && dist <= 0.72) return AxisState.warn;
       return AxisState.fail;
     },
     dynamicGuide: (yaw, pitch, roll, dist, stateX, stateY, stateZ) {
-      if (dist < 0.14) return 'Dekatkan wajah sedikit ke kamera 📱';
+      if (dist < 0.09) return 'Wajah kurang maju! Dekatkan HP ke wajah 📱';
+      if (dist > 0.58) return 'Wajah terlalu dekat! Mundurkan sedikit HP 📱';
+      if (roll.abs() > 22) return 'Tegakkan posisi kepala (jangan miring) ⚖️';
       final absY = yaw.abs();
-      if (absY < 5) return 'Tengokkan kepala ke KANAN ➡️';
-      if (absY < 10) return 'Tengok ke KANAN sedikit lagi ➡️';
-      if (absY > 42) return 'Kurangi tengokan ke kanan (sedikit ke tengah) ⬅️';
+      if (absY < 5) return 'Kurang menoleh! Tengokkan kepala ke KANAN ➡️';
+      if (absY < 8) return 'Sedikit lagi! Tengok ke KANAN sedikit lagi ➡️';
+      if (absY > 45) return 'Terlalu menoleh ke kanan! Kurangi sedikit ke kiri ⬅️';
       if (stateX != AxisState.pass) {
-        return pitch > 20 ? 'Tundukkan kepala sedikit ⬇️' : 'Angkat dagu sedikit ⬆️';
+        return pitch > 24 ? 'Tundukkan kepala sedikit ⬇️' : 'Angkat dagu sedikit ⬆️';
       }
       return 'POSISI PAS! Tahan posisi tengok kanan... 🔒';
     },
@@ -213,32 +216,34 @@ final List<PoseTarget> kPoseTargets = [
     instruction: 'Angkat dagu sedikit ke atas',
     icon: Icons.arrow_upward,
     directionIcon: Icons.arrow_circle_up_rounded,
-    targetXText: '+8° s/d +35° (Atas)',
-    targetYText: '±22°',
-    targetZText: 'Roll ±20° | Jarak ≥18%',
+    targetXText: '6° s/d 40° (Atas)',
+    targetYText: '±24°',
+    targetZText: 'Roll ±22° | Jarak Pas',
     checkX: (pitch) {
       final absP = pitch.abs();
-      if (absP >= 7 && absP <= 35) return AxisState.pass;
-      if ((absP >= 3 && absP < 7) || (absP > 35 && absP <= 45)) return AxisState.warn;
+      if (absP >= 6 && absP <= 40) return AxisState.pass;
+      if ((absP >= 3 && absP < 6) || (absP > 40 && absP <= 50)) return AxisState.warn;
       return AxisState.fail;
     },
     checkY: (yaw) {
       final y = yaw.abs();
-      if (y <= 22) return AxisState.pass;
-      if (y <= 30) return AxisState.warn;
+      if (y <= 24) return AxisState.pass;
+      if (y <= 32) return AxisState.warn;
       return AxisState.fail;
     },
     checkZ: (roll, dist) {
-      if (roll.abs() <= 20 && dist >= 0.18) return AxisState.pass;
-      if (roll.abs() <= 28 && dist >= 0.12) return AxisState.warn;
+      if (roll.abs() <= 22 && dist >= 0.10 && dist <= 0.65) return AxisState.pass;
+      if (roll.abs() <= 30 && dist >= 0.07 && dist <= 0.72) return AxisState.warn;
       return AxisState.fail;
     },
     dynamicGuide: (yaw, pitch, roll, dist, stateX, stateY, stateZ) {
-      if (dist < 0.14) return 'Dekatkan wajah sedikit ke kamera 📱';
+      if (dist < 0.09) return 'Wajah kurang maju! Dekatkan HP ke wajah 📱';
+      if (dist > 0.58) return 'Wajah terlalu dekat! Mundurkan sedikit HP 📱';
+      if (roll.abs() > 22) return 'Tegakkan posisi kepala (jangan miring) ⚖️';
       final absP = pitch.abs();
-      if (absP < 4) return 'Angkat dagu ke ATAS ⬆️';
-      if (absP < 7) return 'Angkat dagu ke ATAS sedikit lagi ⬆️';
-      if (absP > 35) return 'Turunkan dagu sedikit (terlalu mendongak) ⬇️';
+      if (absP < 4) return 'Kurang mendongak! Angkat dagu ke ATAS ⬆️';
+      if (absP < 6) return 'Sedikit lagi! Angkat dagu ke ATAS sedikit lagi ⬆️';
+      if (absP > 40) return 'Terlalu mendongak! Turunkan dagu ke BAWAH ⬇️';
       if (stateY != AxisState.pass) return 'Luruskan wajah ke depan sambil mendongak';
       return 'POSISI PAS! Tahan posisi dagu di atas... 🔒';
     },
@@ -249,32 +254,34 @@ final List<PoseTarget> kPoseTargets = [
     instruction: 'Tundukkan kepala sedikit ke bawah',
     icon: Icons.arrow_downward,
     directionIcon: Icons.arrow_circle_down_rounded,
-    targetXText: '-7° s/d -35° (Bawah)',
-    targetYText: '±22°',
-    targetZText: 'Roll ±20° | Jarak ≥18%',
+    targetXText: '6° s/d 40° (Bawah)',
+    targetYText: '±24°',
+    targetZText: 'Roll ±22° | Jarak Pas',
     checkX: (pitch) {
       final absP = pitch.abs();
-      if (absP >= 7 && absP <= 35) return AxisState.pass;
-      if ((absP >= 3 && absP < 7) || (absP > 35 && absP <= 45)) return AxisState.warn;
+      if (absP >= 6 && absP <= 40) return AxisState.pass;
+      if ((absP >= 3 && absP < 6) || (absP > 40 && absP <= 50)) return AxisState.warn;
       return AxisState.fail;
     },
     checkY: (yaw) {
       final y = yaw.abs();
-      if (y <= 22) return AxisState.pass;
-      if (y <= 30) return AxisState.warn;
+      if (y <= 24) return AxisState.pass;
+      if (y <= 32) return AxisState.warn;
       return AxisState.fail;
     },
     checkZ: (roll, dist) {
-      if (roll.abs() <= 20 && dist >= 0.18) return AxisState.pass;
-      if (roll.abs() <= 28 && dist >= 0.12) return AxisState.warn;
+      if (roll.abs() <= 22 && dist >= 0.10 && dist <= 0.65) return AxisState.pass;
+      if (roll.abs() <= 30 && dist >= 0.07 && dist <= 0.72) return AxisState.warn;
       return AxisState.fail;
     },
     dynamicGuide: (yaw, pitch, roll, dist, stateX, stateY, stateZ) {
-      if (dist < 0.14) return 'Dekatkan wajah sedikit ke kamera 📱';
+      if (dist < 0.09) return 'Wajah kurang maju! Dekatkan HP ke wajah 📱';
+      if (dist > 0.58) return 'Wajah terlalu dekat! Mundurkan sedikit HP 📱';
+      if (roll.abs() > 22) return 'Tegakkan posisi kepala (jangan miring) ⚖️';
       final absP = pitch.abs();
-      if (absP < 4) return 'Tundukkan kepala ke BAWAH ⬇️';
-      if (absP < 7) return 'Tundukkan kepala sedikit lagi ⬇️';
-      if (absP > 35) return 'Angkat kepala sedikit (terlalu menunduk) ⬆️';
+      if (absP < 4) return 'Kurang menunduk! Tundukkan kepala ke BAWAH ⬇️';
+      if (absP < 6) return 'Sedikit lagi! Tundukkan kepala sedikit lagi ⬇️';
+      if (absP > 40) return 'Terlalu menunduk! Angkat kepala ke ATAS ⬆️';
       if (stateY != AxisState.pass) return 'Luruskan wajah ke depan sambil menunduk';
       return 'POSISI PAS! Tahan posisi tunduk... 🔒';
     },
@@ -308,6 +315,7 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
       _cameras.isNotEmpty ? _cameras[_selectedCameraIndex] : null;
 
   bool _isCameraInitialized = false;
+  String? _cameraInitError;
   bool _isDetecting = false;
   bool _isCapturing = false;
   int _lastFrameTime = 0;
@@ -398,19 +406,21 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.nv21,
       );
+      await controller.initialize();
 
       _cameraController = controller;
-      await controller.initialize();
       if (!mounted) return;
 
       setState(() {
         _isCameraInitialized = true;
+        _cameraInitError = null;
       });
 
       await controller.startImageStream(_processCameraFrame);
     } catch (e) {
       if (mounted) {
         setState(() {
+          _cameraInitError = e.toString();
           _statusMessage = 'Gagal inisialisasi kamera: $e';
         });
       }
@@ -431,8 +441,8 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
     if (_isDetecting || _isCapturing || _faceDetector == null || curCam == null) return;
 
     final now = DateTime.now().millisecondsSinceEpoch;
-    // Throttle frame processing (~90ms untuk responsivitas halus dan live)
-    if (now - _lastFrameTime < 90) return;
+    // Throttle frame processing (~120ms untuk stabilitas dan responsivitas halus)
+    if (now - _lastFrameTime < 120) return;
     _lastFrameTime = now;
     _isDetecting = true;
 
@@ -466,7 +476,7 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
       if (facesCount == 0) {
         msg = 'Posisikan wajah ke dalam area oval kamera';
       } else if (facesCount > 1) {
-        msg = 'Terdeteksi $facesCount wajah. Pastikan hanya 1 orang di depan kamera.';
+        msg = 'Terdeteksi $facesCount wajah. Harap hanya 1 orang di depan kamera.';
       } else {
         final face = faces.first;
         yaw = face.headEulerAngleY ?? 0.0;
@@ -476,7 +486,7 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
         // Ukuran wajah relatif terhadap frame kamera
         final frameDim = (image.width < image.height ? image.width : image.height).toDouble();
         distRatio = frameDim > 0 ? (face.boundingBox.width / frameDim) : 0.0;
-        largeEnough = distRatio >= 0.18;
+        largeEnough = distRatio >= 0.10;
 
         sX = targetPose.checkX(pitch);
         sY = targetPose.checkY(yaw);
@@ -510,26 +520,26 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
         _statusMessage = msg;
       });
 
-      // Auto-Capture Hands-Free: Countdown halus (~550ms) saat semua sumbu HIJAU (PAS)
+      // Auto-Capture Hands-Free: Countdown responsif (~360ms) saat semua sumbu HIJAU (PAS)
       if (aligned && !_isCapturing) {
         if (_countdownTicker == null || !_countdownTicker!.isActive) {
-          _countdownTicker = Timer.periodic(const Duration(milliseconds: 35), (timer) {
+          _countdownTicker = Timer.periodic(const Duration(milliseconds: 25), (timer) {
             if (!mounted) {
               timer.cancel();
               return;
             }
             if (_overallState == AxisState.pass && !_isCapturing) {
               setState(() {
-                _autoCaptureProgress = (_autoCaptureProgress + (35 / 550)).clamp(0.0, 1.0);
+                _autoCaptureProgress = (_autoCaptureProgress + (25 / 360)).clamp(0.0, 1.0);
               });
               if (_autoCaptureProgress >= 1.0) {
                 timer.cancel();
                 _triggerAutoCapture();
               }
             } else if (_overallState == AxisState.warn) {
-              // Anti-Jitter: jika ada gerakan mikro sesaat, jangan langsung reset nol
+              // Anti-Jitter: jika ada gerakan mikro sesaat, kurangi perlahan
               setState(() {
-                _autoCaptureProgress = (_autoCaptureProgress - 0.06).clamp(0.0, 1.0);
+                _autoCaptureProgress = (_autoCaptureProgress - 0.04).clamp(0.0, 1.0);
               });
             } else {
               timer.cancel();
@@ -549,7 +559,8 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
           });
         }
       }
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[CaptureScreen] Face Detection frame error: $e');
     } finally {
       _isDetecting = false;
     }
@@ -612,7 +623,9 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
 
     try {
       // Hentikan stream sementara saat capture
-      await _cameraController!.stopImageStream();
+      if (_cameraController!.value.isStreamingImages) {
+        await _cameraController!.stopImageStream();
+      }
 
       final xFile = await _cameraController!.takePicture();
       final imageBytes = await xFile.readAsBytes();
@@ -620,22 +633,21 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
       // Jalankan pemeriksaan blur dan luminansi di Isolate
       final quality = await computeImageQuality(imageBytes);
 
-      if (!quality.isValid) {
+      if (quality.isTooDark) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(quality.errorMessage ?? 'Kualitas foto belum memenuhi standar.'),
-              backgroundColor: Colors.red.shade800,
-              duration: const Duration(seconds: 3),
+            const SnackBar(
+              content: Text('Pencahayaan terlalu gelap. Harap cari tempat yang lebih terang.'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
             ),
           );
-        }
-        // Ulangi pose yang sama
-        if (mounted) {
           setState(() {
             _isCapturing = false;
           });
-          await _cameraController!.startImageStream(_processCameraFrame);
+          if (!_cameraController!.value.isStreamingImages) {
+            await _cameraController!.startImageStream(_processCameraFrame);
+          }
         }
         return;
       }
@@ -653,7 +665,9 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
             _autoCaptureProgress = 0.0;
             _overallState = AxisState.fail;
           });
-          await _cameraController!.startImageStream(_processCameraFrame);
+          if (!_cameraController!.value.isStreamingImages) {
+            await _cameraController!.startImageStream(_processCameraFrame);
+          }
         }
       } else {
         // Kelima pose selesai!
@@ -667,7 +681,11 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
         setState(() {
           _isCapturing = false;
         });
-        await _cameraController!.startImageStream(_processCameraFrame);
+        try {
+          if (_cameraController != null && !_cameraController!.value.isStreamingImages) {
+            await _cameraController!.startImageStream(_processCameraFrame);
+          }
+        } catch (_) {}
       }
     }
   }
@@ -1167,6 +1185,52 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_cameraInitError != null) {
+      return Scaffold(
+        backgroundColor: const Color(0xFF0F172A),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(28),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.videocam_off_rounded, color: Colors.orangeAccent, size: 64),
+                const SizedBox(height: 16),
+                const Text(
+                  'Kamera Tidak Dapat Dibuka',
+                  style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  _cameraInitError!,
+                  style: const TextStyle(color: Colors.white70, fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  icon: const Icon(Icons.refresh),
+                  label: const Text('Coba Lagi'),
+                  onPressed: () {
+                    setState(() {
+                      _cameraInitError = null;
+                      _isCameraInitialized = false;
+                    });
+                    _initCamera();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     final currentPose = kPoseTargets[_currentPoseIndex];
     final isAligned = _overallState == AxisState.pass;
 

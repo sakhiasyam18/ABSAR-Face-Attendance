@@ -1,6 +1,7 @@
 import hashlib
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -55,8 +56,21 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=UserResponse)
 def login(req: LoginRequest, db: Session = Depends(get_db)):
-    email = req.email.strip().lower()
-    user = db.query(User).filter(User.email == email).first()
+    raw_input = req.email.strip().lower()
+    clean_prefix = raw_input.split('@')[0].split('.')[0]
+    
+    # Fleksibel: cari berdasarkan Email, NIM / NIP, atau variasi domain kampus
+    user = db.query(User).filter(
+        or_(
+            User.email == raw_input,
+            User.identifier == raw_input,
+            User.email == f"{raw_input}@um.ac.id",
+            User.email == f"{raw_input}.um.ac.id",
+            User.email == raw_input.replace('@', '.'),
+            User.email == raw_input.replace('.um.ac.id', '@um.ac.id'),
+            User.email.ilike(f"{clean_prefix}%")
+        )
+    ).first()
 
     # Convenience check: if DB is fresh and user logs in as default Ashar Pakawaru dosen,
     # auto-provision this verified dosen account so the user can immediately test!

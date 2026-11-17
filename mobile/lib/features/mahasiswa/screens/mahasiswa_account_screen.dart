@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../core/api/api_client.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/luxury_card.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -120,10 +121,35 @@ class MahasiswaAccountScreen extends ConsumerWidget {
 
               // Button to update face
               PrimaryButton(
-                text: 'Update Face Data Status',
+                text: 'Perbarui / Update Wajah',
                 icon: Icons.face_retouching_natural_rounded,
-                onPressed: () {
-                  context.push('/register');
+                onPressed: () async {
+                  final sNim = user?.identifier?.toString().trim() ?? '';
+                  if (sNim.isEmpty || sNim == '-') {
+                    context.push('/register');
+                    return;
+                  }
+                  try {
+                    final dio = ref.read(apiClientProvider);
+                    final res = await dio.get('/students/lookup', queryParameters: {'nim': sNim});
+                    final studentId = res.data['id'] as int;
+                    final studentName = (res.data['full_name'] ?? user?.fullName ?? 'Mahasiswa').toString();
+                    final hasFaces = res.data['has_faces'] == true || res.data['has_faces'] == 1;
+
+                    if (!context.mounted) return;
+                    context.push(
+                      '/register/capture',
+                      extra: {
+                        'student_id': studentId,
+                        'student_name': studentName,
+                        'nim': sNim,
+                        'overwrite': hasFaces,
+                      },
+                    );
+                  } catch (e) {
+                    if (!context.mounted) return;
+                    context.push('/register');
+                  }
                 },
               ),
               const SizedBox(height: 20),
