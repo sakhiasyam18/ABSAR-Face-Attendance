@@ -1,9 +1,9 @@
 @echo off
-title SnapAttend v3.2.5 - Build dan Deploy (PC dan HP)
+title SnapAttend v3.2.6 - Build dan Deploy (PC dan HP)
 cd /d "%~dp0"
 
 echo ========================================================
-echo        SNAPATTEND v3.2.5 - BUILD DAN DEPLOY
+echo        SNAPATTEND v3.2.6 - BUILD DAN DEPLOY
 echo       Universitas Negeri Malang - Face Attendance
 echo ========================================================
 echo.
@@ -46,12 +46,12 @@ if not exist "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" (
 )
 
 cd /d "%~dp0"
-copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0SnapAttend-v3.2.5.apk"
+copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0SnapAttend-v3.2.6.apk"
 
 echo.
 echo ========================================================
 echo [BERHASIL] File APK Resmi Siap:
-echo Lokasi File: %~dp0SnapAttend-v3.2.5.apk
+echo Lokasi File: %~dp0SnapAttend-v3.2.6.apk
 echo ========================================================
 echo.
 
@@ -65,12 +65,12 @@ if exist "%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe" set ADB_BIN="%LOCAL
 echo.
 echo Terdeteksi HP di atas, menginstall APK otomatis...
 echo Menginstall APK terbaru ke HP Anda...
-%ADB_BIN% install -r "%~dp0SnapAttend-v3.2.5.apk"
+%ADB_BIN% install -r "%~dp0SnapAttend-v3.2.6.apk"
 if %errorlevel% neq 0 (
     echo.
     echo [INFO] Mencoba install ulang...
     %ADB_BIN% uninstall com.example.mobile
-    %ADB_BIN% install "%~dp0SnapAttend-v3.2.5.apk"
+    %ADB_BIN% install "%~dp0SnapAttend-v3.2.6.apk"
 )
 
 echo Mengaktifkan jalur USB Port 8000 (Mode USB)...
@@ -79,7 +79,7 @@ echo Mengaktifkan jalur USB Port 8000 (Mode USB)...
 echo Membuka aplikasi SnapAttend di HP...
 %ADB_BIN% shell monkey -p com.example.mobile -c android.intent.category.LAUNCHER 1
 echo.
-echo [SUKSES HP] SnapAttend v3.2.5 berhasil terpasang dan dibuka di HP Anda!
+echo [SUKSES HP] SnapAttend v3.2.6 berhasil terpasang dan dibuka di HP Anda!
 
 echo.
 echo ========================================================

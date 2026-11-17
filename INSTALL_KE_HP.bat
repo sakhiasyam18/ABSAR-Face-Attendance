@@ -1,9 +1,9 @@
 @echo off
-title Pasang SnapAttend v3.2.5 ke HP
+title Pasang SnapAttend v3.2.6 ke HP
 cd /d "%~dp0"
 
 echo ========================================================
-echo        PASANG SNAPATTEND v3.2.5 LANGSUNG KE HP
+echo        PASANG SNAPATTEND v3.2.6 LANGSUNG KE HP
 echo ========================================================
 echo.
 
@@ -16,15 +16,15 @@ echo 1. Memeriksa koneksi HP...
 echo.
 
 echo 2. Memastikan file APK resmi terbaru...
-copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0SnapAttend-v3.2.5.apk" >nul
+copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0SnapAttend-v3.2.6.apk" >nul
 
 echo 3. Menginstall APK ke HP Anda...
-%ADB_BIN% install -r "%~dp0SnapAttend-v3.2.5.apk"
+%ADB_BIN% install -r "%~dp0SnapAttend-v3.2.6.apk"
 if %errorlevel% neq 0 (
     echo.
     echo [INFO] Jika install gagal, mencoba uninstall versi lama terlebih dahulu...
     %ADB_BIN% uninstall com.example.mobile
-    %ADB_BIN% install "%~dp0SnapAttend-v3.2.5.apk"
+    %ADB_BIN% install "%~dp0SnapAttend-v3.2.6.apk"
 )
 
 echo.
@@ -36,6 +36,6 @@ echo 5. Membuka SnapAttend di HP...
 
 echo.
 echo ========================================================
-echo [BERHASIL] SnapAttend v3.2.5 sudah terpasang dan terbuka di HP Anda!
+echo [BERHASIL] SnapAttend v3.2.6 sudah terpasang dan terbuka di HP Anda!
 echo ========================================================
 pause

@@ -505,6 +505,8 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
 
       final bool aligned = overall == AxisState.pass && facesCount == 1;
 
+      debugPrint('[CaptureScreen] Detected $facesCount face(s) | Yaw: ${yaw.toStringAsFixed(1)} | Pitch: ${pitch.toStringAsFixed(1)} | Msg: $msg');
+
       setState(() {
         _facesDetectedCount = facesCount;
         _isFaceLargeEnough = largeEnough;
@@ -593,8 +595,9 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
         rotation = InputImageRotation.rotation0deg;
     }
 
-    final format = InputImageFormatValue.fromRawValue(image.format.raw);
-    if (format == null) return null;
+    final format = Platform.isAndroid
+        ? InputImageFormat.nv21
+        : (InputImageFormatValue.fromRawValue(image.format.raw) ?? InputImageFormat.nv21);
 
     final bytes = Uint8List.fromList(
       image.planes.fold<List<int>>(<int>[], (list, plane) => list..addAll(plane.bytes)),
@@ -1419,7 +1422,7 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
                   right: 0,
                   child: Center(
                     child: Text(
-                      'SnapAttend v3.2.5 • Universitas Negeri Malang (UM)',
+                      'SnapAttend v3.2.6 • Universitas Negeri Malang (UM)',
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.4),
                         fontSize: 9.5,

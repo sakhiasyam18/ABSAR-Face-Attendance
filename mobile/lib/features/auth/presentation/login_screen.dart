@@ -284,7 +284,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     border: Border.all(color: Colors.white10, width: 0.8),
                   ),
                   child: const Text(
-                    'SnapAttend v3.2.5 • Universitas Negeri Malang (UM)',
+                    'SnapAttend v3.2.6 • Universitas Negeri Malang (UM)',
                     style: TextStyle(
                       color: AppColors.textMuted,
                       fontSize: 10.5,

@@ -51,7 +51,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
               const SizedBox(height: 20),
               const Center(
                 child: Text(
-                  'SnapAttend v3.2.5 • Universitas Negeri Malang (UM)',
+                  'SnapAttend v3.2.6 • Universitas Negeri Malang (UM)',
                   style: TextStyle(
                     color: AppColors.textMuted,
                     fontSize: 11,

@@ -1,8 +1,8 @@
-# 🎓 SnapAttend V3.2.5 — Sistem Presensi Wajah Cerdas Berbasis AI (InsightFace & Edge Sensor HUD)
+# 🎓 SnapAttend V3.2.6 — Sistem Presensi Wajah Cerdas Berbasis AI (InsightFace & Edge Sensor HUD)
 
 <div align="center">
 
-![SnapAttend Release](https://img.shields.io/badge/Release-SnapAttend--v3.2.5.apk-00C853?style=for-the-badge&logo=android&logoColor=white)
+![SnapAttend Release](https://img.shields.io/badge/Release-SnapAttend--v3.2.6.apk-00C853?style=for-the-badge&logo=android&logoColor=white)
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
