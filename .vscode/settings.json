@@ -1,5 +1,7 @@
 {
+  "gradle.autoDetect": "off",
   "gradle.nestedProjects": false,
+  "java.import.gradle.enabled": false,
   "search.followSymlinks": false,
   "search.exclude": {
     "**/.plugin_symlinks": true,
