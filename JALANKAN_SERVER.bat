@@ -1,10 +1,10 @@
 @echo off
 setlocal enabledelayedexpansion
-title Server Backend SnapAttend V3
+title Server Backend ABSAR Face Attendance
 cd /d "%~dp0backend"
 
 echo ========================================================
-echo       MENJALANKAN SERVER BACKEND SNAPATTEND V3
+echo       MENJALANKAN SERVER BACKEND ABSAR
 echo ========================================================
 echo.
 

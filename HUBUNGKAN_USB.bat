@@ -1,18 +1,13 @@
 @echo off
-title Hubungkan USB Tunnel SnapAttend V3
+title Hubungkan USB Tunnel ABSAR
 echo ========================================================
 echo       HUBUNGKAN PORT USB (ADB REVERSE TUNNEL)
 echo ========================================================
-where adb >nul 2>nul
-if %errorlevel% equ 0 (
-    adb reverse tcp:8000 tcp:8000
-) else (
-    if exist "D:\AndroidStudio\platform-tools\adb.exe" (
-        "D:\AndroidStudio\platform-tools\adb.exe" reverse tcp:8000 tcp:8000
-    ) else (
-        adb reverse tcp:8000 tcp:8000
-    )
-)
+set ADB_BIN=adb
+if exist "C:\Program Files\ASUS\GlideX\adb.exe" set ADB_BIN="C:\Program Files\ASUS\GlideX\adb.exe"
+if exist "%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe" set ADB_BIN="%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe"
+
+%ADB_BIN% reverse tcp:8000 tcp:8000
 echo.
 echo [BERHASIL] Port USB reverse tcp:8000 telah terhubung!
 echo Di HP Anda: Buka Pengaturan Server -> Gunakan http://127.0.0.1:8000
