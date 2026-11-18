@@ -39,7 +39,7 @@ class _SessionHomeScreenState extends ConsumerState<SessionHomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Menyelesaikan sesi akan mengunci kehadiran mahasiswa dan mencatat poin resmi.',
+              'Menyelesaikan sesi akan mengunci kehadiran santri dan mencatat poin resmi.',
             ),
             const SizedBox(height: 12),
             Container(
@@ -255,7 +255,7 @@ class _SessionHomeScreenState extends ConsumerState<SessionHomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Daftar Mahasiswa ($hadirCount / $totalCount Hadir)',
+                'Daftar Santri ($hadirCount / $totalCount Hadir)',
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               if (isFinal)
@@ -269,7 +269,7 @@ class _SessionHomeScreenState extends ConsumerState<SessionHomeScreen> {
         ),
         const Divider(height: 1),
 
-        // 3. List Mahasiswa
+        // 3. List Santri
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -324,7 +324,7 @@ class _SessionHomeScreenState extends ConsumerState<SessionHomeScreen> {
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                   ),
                   subtitle: Text(
-                    'NIM: ${p.nim}',
+                    'NIS: ${p.nim}',
                     style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
                   ),
                   trailing: Container(

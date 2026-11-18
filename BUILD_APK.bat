@@ -1,10 +1,10 @@
 @echo off
-title SnapAttend v3.2.6 - Build dan Deploy (PC dan HP)
+title ABSAR - Build dan Deploy (PC dan HP)
 cd /d "%~dp0"
 
 echo ========================================================
-echo        SNAPATTEND v3.2.6 - BUILD DAN DEPLOY
-echo       Universitas Negeri Malang - Face Attendance
+echo        ABSAR - NEXT-GEN AI VISION ATTENDANCE
+echo        "Satu Jepretan Kelas Tanpa Titip Absen"
 echo ========================================================
 echo.
 
@@ -46,12 +46,13 @@ if not exist "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" (
 )
 
 cd /d "%~dp0"
-copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0SnapAttend-v3.2.6.apk"
+copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0ABSAR-Face-Attendance.apk"
+copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0SnapAttend-v3.2.6.apk" >nul
 
 echo.
 echo ========================================================
 echo [BERHASIL] File APK Resmi Siap:
-echo Lokasi File: %~dp0SnapAttend-v3.2.6.apk
+echo Lokasi File: %~dp0ABSAR-Face-Attendance.apk
 echo ========================================================
 echo.
 
@@ -65,21 +66,21 @@ if exist "%LOCALAPPDATA%\Android\Sdk\platform-tools\adb.exe" set ADB_BIN="%LOCAL
 echo.
 echo Terdeteksi HP di atas, menginstall APK otomatis...
 echo Menginstall APK terbaru ke HP Anda...
-%ADB_BIN% install -r "%~dp0SnapAttend-v3.2.6.apk"
+%ADB_BIN% install -r "%~dp0ABSAR-Face-Attendance.apk"
 if %errorlevel% neq 0 (
     echo.
     echo [INFO] Mencoba install ulang...
     %ADB_BIN% uninstall com.example.mobile
-    %ADB_BIN% install "%~dp0SnapAttend-v3.2.6.apk"
+    %ADB_BIN% install "%~dp0ABSAR-Face-Attendance.apk"
 )
 
 echo Mengaktifkan jalur USB Port 8000 (Mode USB)...
 %ADB_BIN% reverse tcp:8000 tcp:8000
 
-echo Membuka aplikasi SnapAttend di HP...
+echo Membuka aplikasi ABSAR di HP...
 %ADB_BIN% shell monkey -p com.example.mobile -c android.intent.category.LAUNCHER 1
 echo.
-echo [SUKSES HP] SnapAttend v3.2.6 berhasil terpasang dan dibuka di HP Anda!
+echo [SUKSES HP] ABSAR Face Attendance berhasil terpasang dan dibuka di HP Anda!
 
 echo.
 echo ========================================================
@@ -87,7 +88,7 @@ echo [LANGKAH 3/3] Menjalankan Server Backend Laptop (PC)...
 echo ========================================================
 echo.
 echo Membuka Server Backend di jendela terpisah...
-start "Server Backend SnapAttend" cmd /k "%~dp0JALANKAN_SERVER.bat"
+start "Server Backend ABSAR" cmd /k "%~dp0JALANKAN_SERVER.bat"
 
 echo.
 echo ========================================================

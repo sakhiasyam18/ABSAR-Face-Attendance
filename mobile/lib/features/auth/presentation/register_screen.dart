@@ -19,7 +19,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   final _nameController = TextEditingController();
   final _identifierController = TextEditingController(); // NIP or NIM
-  final _prodiController = TextEditingController(text: 'S1 Teknik Informatika');
+  final _prodiController = TextEditingController(text: "Pondok Pesantren / Ma'had");
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -189,25 +189,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         ),
         const SizedBox(height: 6),
         const Text(
-          'Tentukan peran Anda dalam sistem presensi SnapAttend',
+          'Tentukan peran Anda dalam sistem presensi ABSAR',
           style: TextStyle(fontSize: 13.5, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 28),
 
-        // Role Card: Dosen
+        // Role Card: Dosen / Ustadz
         _buildRoleCard(
           role: 'dosen',
-          title: 'Dosen Pengampu',
-          subtitle: 'Kelola kelas, ambil presensi di ruang kuliah, dan pantau rekapitulasi kehadiran mahasiswa',
+          title: 'Ustadz / Pengajar',
+          subtitle: 'Kelola kelas / halaqah, ambil presensi di ruang belajar, dan pantau kehadiran santri',
           icon: Icons.school_rounded,
         ),
         const SizedBox(height: 16),
 
-        // Role Card: Mahasiswa
+        // Role Card: Mahasiswa / Santri
         _buildRoleCard(
           role: 'mahasiswa',
-          title: 'Mahasiswa',
-          subtitle: 'Lihat status kehadiran pribadi, riwayat presensi kelas, dan poin keaktifan kuliah',
+          title: 'Santri',
+          subtitle: 'Lihat status kehadiran pribadi, riwayat presensi kelas, dan poin kedisiplinan',
           icon: Icons.person_rounded,
         ),
         const SizedBox(height: 36),
@@ -300,7 +300,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isDosen ? 'Data Profil Dosen' : 'Data Profil Mahasiswa',
+          isDosen ? 'Data Profil Ustadz' : 'Data Profil Santri',
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white),
         ),
         const SizedBox(height: 6),
@@ -321,32 +321,32 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 controller: _nameController,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: isDosen ? 'Contoh: Dr. Ir. Ashar Pakawaru, S.T., M.T.' : 'Contoh: Budi Santoso',
+                  hintText: isDosen ? 'Contoh: Ustadz Ahmad Fauzi, Lc., M.Ag.' : 'Contoh: Muhammad Ali',
                   prefixIcon: const Icon(Icons.person_outline_rounded, color: AppColors.textMuted, size: 20),
                 ),
               ),
               const SizedBox(height: 16),
 
-              Text(isDosen ? 'NIP Dosen' : 'NIM Mahasiswa (12 Digit)', style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.w600)),
+              Text(isDosen ? 'NIU / ID Pengajar' : 'NIS Santri (Nomor Induk Santri)', style: const TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.w600)),
               const SizedBox(height: 8),
               TextField(
                 controller: _identifierController,
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: isDosen ? 'Contoh: 19750815 200212 1 002' : 'Contoh: 210535614401',
+                  hintText: isDosen ? 'Contoh: 19850101 202101 1 001' : 'Contoh: 240535600363',
                   prefixIcon: const Icon(Icons.badge_outlined, color: AppColors.textMuted, size: 20),
                 ),
               ),
               const SizedBox(height: 16),
 
-              const Text('Program Studi / Departemen', style: TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.w600)),
+              const Text("Lembaga / Ma'had / Kelas", style: TextStyle(color: AppColors.textSecondary, fontSize: 13, fontWeight: FontWeight.w600)),
               const SizedBox(height: 8),
               TextField(
                 controller: _prodiController,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: const InputDecoration(
-                  hintText: 'S1 Teknik Informatika - UM',
+                  hintText: "Pondok Pesantren / Madrasah / Ma'had",
                   prefixIcon: Icon(Icons.account_balance_outlined, color: AppColors.textMuted, size: 20),
                 ),
               ),
@@ -359,7 +359,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white, fontSize: 14),
                 decoration: const InputDecoration(
-                  hintText: 'nama@um.ac.id',
+                  hintText: 'nama@lembaga.id',
                   prefixIcon: Icon(Icons.mail_outline_rounded, color: AppColors.textMuted, size: 20),
                 ),
               ),

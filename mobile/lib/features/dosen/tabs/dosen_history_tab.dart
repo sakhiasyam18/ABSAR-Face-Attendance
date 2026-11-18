@@ -349,7 +349,7 @@ class _DosenHistoryTabState extends ConsumerState<DosenHistoryTab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Kehadiran: $present/$total Mahasiswa',
+                'Kehadiran: $present/$total Santri',
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,

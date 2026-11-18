@@ -94,7 +94,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
             ],
           ),
           content: const Text(
-            'Kelas ini belum memiliki mahasiswa di roster. Silakan tambahkan mahasiswa atau import CSV terlebih dahulu sebelum memulai sesi presensi (BR-03).',
+            'Kelas ini belum memiliki santri di roster. Silakan tambahkan santri atau import CSV terlebih dahulu sebelum memulai sesi presensi (BR-03).',
           ),
           actions: [
             TextButton(
@@ -136,7 +136,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Perhatian: Ada ${session.withoutFacesCount} mahasiswa di kelas ini yang belum mendaftarkan wajah.',
+              'Perhatian: Ada ${session.withoutFacesCount} santri di kelas ini yang belum mendaftarkan wajah.',
             ),
             backgroundColor: Colors.orange.shade800,
             duration: const Duration(seconds: 4),
@@ -212,7 +212,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                     ),
                     const SizedBox(height: 8),
                     const Text(
-                      'Harap buat kelas dan isi roster mahasiswa terlebih dahulu sebelum memulai presensi.',
+                      'Harap buat kelas dan isi roster santri terlebih dahulu sebelum memulai presensi.',
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.grey),
                     ),
@@ -347,8 +347,8 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                           Expanded(
                             child: Text(
                               _selectedClass!.studentCount > 0
-                                  ? '${_selectedClass!.studentCount} Mahasiswa (${_selectedClass!.facesRegisteredCount} Terdaftar Wajah)'
-                                  : 'Kelas belum memiliki mahasiswa di roster!',
+                                  ? '${_selectedClass!.studentCount} Santri (${_selectedClass!.facesRegisteredCount} Terdaftar Wajah)'
+                                  : 'Kelas belum memiliki santri di roster!',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,

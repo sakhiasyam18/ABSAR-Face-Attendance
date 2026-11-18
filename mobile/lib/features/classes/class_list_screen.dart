@@ -340,7 +340,7 @@ class _ClassCard extends StatelessWidget {
                         const SizedBox(width: 6),
                         Flexible(
                           child: Text(
-                            '${cls.studentCount} Mahasiswa',
+                            '${cls.studentCount} Santri',
                             style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 13),
                             overflow: TextOverflow.ellipsis,
                           ),

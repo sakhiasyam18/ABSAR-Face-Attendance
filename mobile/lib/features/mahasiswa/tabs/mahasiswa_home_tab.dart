@@ -28,7 +28,7 @@ class _MahasiswaHomeTabState extends ConsumerState<MahasiswaHomeTab> {
     final classesAsync = ref.watch(classesListProvider);
     final sessionsAsync = ref.watch(allSessionsProvider);
 
-    final studentName = user?.fullName.isNotEmpty == true ? user!.fullName : 'Mahasiswa';
+    final studentName = user?.fullName.isNotEmpty == true ? user!.fullName : 'Santri';
     final studentNim = user?.identifier?.isNotEmpty == true ? user!.identifier! : '-';
     final userNim = user?.identifier?.trim() ?? '';
 
@@ -121,7 +121,7 @@ class _MahasiswaHomeTabState extends ConsumerState<MahasiswaHomeTab> {
             ),
             const SizedBox(width: 10),
             const Text(
-              'SnapAttend',
+              'ABSAR',
               style: TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 20,
@@ -219,7 +219,7 @@ class _MahasiswaHomeTabState extends ConsumerState<MahasiswaHomeTab> {
                       border: Border.all(color: AppColors.border, width: 1),
                     ),
                     child: Text(
-                      'NIM $nim',
+                      'NIS $nim',
                       style: const TextStyle(
                         color: AppColors.primaryLight,
                         fontSize: 11,
@@ -490,7 +490,7 @@ class _MahasiswaHomeTabState extends ConsumerState<MahasiswaHomeTab> {
     return const EmptyStateView(
       icon: Icons.calendar_today_rounded,
       title: 'Belum Ada Jadwal Kelas Hari Ini',
-      message: 'Jadwal perkuliahan akan muncul otomatis saat kelas aktif dibuka oleh Dosen.',
+      message: 'Jadwal belajar / halaqah akan muncul otomatis saat kelas aktif dibuka oleh Ustadz.',
     );
   }
 

@@ -281,7 +281,7 @@ class _DosenClassesTabState extends ConsumerState<DosenClassesTab> {
                         ),
                         SizedBox(height: 2),
                         Text(
-                          'Kelola mata kuliah & roster mahasiswa',
+                          'Kelola halaqah / kelas & roster santri',
                           style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
                         ),
                       ],
@@ -493,7 +493,7 @@ class _DosenClassesTabState extends ConsumerState<DosenClassesTab> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  '${cls.studentCount} Mhs (${cls.facesRegisteredCount} Wajah)',
+                  '${cls.studentCount} Santri (${cls.facesRegisteredCount} Wajah)',
                   style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white),
                 ),
               ),
@@ -501,7 +501,7 @@ class _DosenClassesTabState extends ConsumerState<DosenClassesTab> {
           ),
           const SizedBox(height: 16),
 
-          // Action Buttons: [ 👥 Mahasiswa ] | [ 🏆 Poin ] | [ 📷 Presensi ]
+          // Action Buttons: [ 👥 Santri ] | [ 🏆 Poin ] | [ 📷 Presensi ]
           Row(
             children: [
               Expanded(
@@ -514,7 +514,7 @@ class _DosenClassesTabState extends ConsumerState<DosenClassesTab> {
                   ),
                   onPressed: () => context.push('/classes/${cls.id}'),
                   icon: const Icon(Icons.people_outline_rounded, size: 16, color: AppColors.primaryLight),
-                  label: const Text('Roster', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
+                  label: const Text('Santri', style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600)),
                 ),
               ),
               const SizedBox(width: 8),

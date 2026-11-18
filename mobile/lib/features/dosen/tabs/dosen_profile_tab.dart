@@ -14,10 +14,10 @@ class DosenProfileTab extends ConsumerWidget {
     final authState = ref.watch(authProvider);
     final user = authState.user;
 
-    final displayName = user?.fullName ?? 'Dr. Ir. Ashar Pakawaru, S.T., M.T.';
-    final displayNip = user?.identifier ?? '19750815 200212 1 002';
-    final displayEmail = user?.email ?? 'ashar.pakawaru@um.ac.id';
-    final displayProdi = user?.programStudy ?? 'S1 Teknik Informatika - Universitas Negeri Malang';
+    final displayName = user?.fullName ?? 'Ustadz Pengampu';
+    final displayNip = user?.identifier ?? '19850101 202101 1 001';
+    final displayEmail = user?.email ?? 'pengajar@lembaga.id';
+    final displayProdi = user?.programStudy ?? "Pondok Pesantren / Ma'had";
 
     return Scaffold(
       backgroundColor: AppColors.bgDark,
@@ -52,7 +52,7 @@ class DosenProfileTab extends ConsumerWidget {
               const SizedBox(height: 18),
               const Center(
                 child: Text(
-                  'SnapAttend v3.2.6 • Universitas Negeri Malang (UM)',
+                  'ABSAR (أَبْصَAR) • Next-Gen AI Vision Attendance',
                   style: TextStyle(
                     color: AppColors.textMuted,
                     fontSize: 11,
@@ -124,7 +124,7 @@ class DosenProfileTab extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'NIP. $nip',
+            'NIU / ID: $nip',
             style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w500,
@@ -139,7 +139,7 @@ class DosenProfileTab extends ConsumerWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: const Text(
-              'Dosen Pengampu Aktif • UM',
+              'Ustadz Pengampu Aktif',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,
@@ -212,11 +212,11 @@ class DosenProfileTab extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 14),
-          _buildInfoRow(Icons.mail_outline_rounded, 'Email Kampus', email),
+          _buildInfoRow(Icons.mail_outline_rounded, 'Email Lembaga', email),
           const Divider(color: AppColors.border, height: 20),
-          _buildInfoRow(Icons.badge_outlined, 'NIP Pegawai', nip),
+          _buildInfoRow(Icons.badge_outlined, 'NIU / ID Pengajar', nip),
           const Divider(color: AppColors.border, height: 20),
-          _buildInfoRow(Icons.account_balance_outlined, 'Program Studi', prodi),
+          _buildInfoRow(Icons.account_balance_outlined, "Lembaga / Ma'had", prodi),
           const Divider(color: AppColors.border, height: 20),
           _buildInfoRow(Icons.security_outlined, 'Status Keamanan', 'Terautentikasi (Offline & Online)'),
         ],
@@ -349,18 +349,18 @@ class DosenProfileTab extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           _buildFaqTile(
-            'Bagaimana cara kerja presensi wajah SnapAttend?',
-            'Aplikasi menggunakan kamera ponsel untuk mendeteksi wajah dengan Google ML Kit, lalu mengekstrak fitur 512-dimensi menggunakan model InsightFace (buffalo_l) di backend untuk mencocokkan mahasiswa secara instan.',
+            'Bagaimana cara kerja presensi wajah ABSAR?',
+            'Aplikasi menggunakan kamera ponsel untuk mendeteksi wajah dengan Google ML Kit, lalu mengekstrak fitur 512-dimensi menggunakan model InsightFace (buffalo_l) di backend untuk mencocokkan santri secara instan.',
           ),
           const Divider(color: AppColors.border, height: 16),
           _buildFaqTile(
-            'Bagaimana jika mahasiswa belum terdaftar wajahnya?',
-            'Dosen dapat mendaftarkan wajah mahasiswa melalui menu "Daftar Wajah" dengan 5 pose (Lurus, Kiri, Kanan, Senyum, Dongak) atau mengubah status kehadiran secara manual di sesi.',
+            'Bagaimana jika santri belum terdaftar wajahnya?',
+            'Ustadz dapat mendaftarkan wajah santri melalui menu "Daftar Wajah" dengan 5 pose (Lurus, Kiri, Kanan, Senyum, Dongak) atau mengubah status kehadiran secara manual di sesi.',
           ),
           const Divider(color: AppColors.border, height: 16),
           _buildFaqTile(
-            'Bagaimana mengimpor daftar mahasiswa?',
-            'Buka tab "Kelas", pilih kelas, lalu unggah file CSV berisi kolom NIM dan Nama Lengkap.',
+            'Bagaimana mengimpor daftar santri?',
+            'Buka tab "Kelas", pilih kelas, lalu unggah file CSV berisi kolom NIS dan Nama Lengkap santri.',
           ),
         ],
       ),
@@ -409,7 +409,7 @@ class DosenProfileTab extends ConsumerWidget {
         },
         icon: const Icon(Icons.logout_rounded, size: 18),
         label: const Text(
-          'Keluar dari Akun Dosen',
+          'Keluar dari Akun Ustadz',
           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
         ),
       ),

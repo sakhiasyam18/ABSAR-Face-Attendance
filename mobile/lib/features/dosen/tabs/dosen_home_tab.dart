@@ -25,10 +25,10 @@ class DosenHomeTab extends ConsumerWidget {
     final user = authState.user;
     final classesAsync = ref.watch(classesListProvider);
 
-    final displayName = user?.fullName ?? 'Dr. Ir. Ashar Pakawaru, S.T., M.T.';
+    final displayName = user?.fullName ?? 'Ustadz Pengampu';
     final displayRole = user?.isDosen ?? true
-        ? 'Dosen Pengampu • Teknik Informatika'
-        : 'Mahasiswa • Teknik Informatika';
+        ? "Ustadz Pengampu • Ma'had / Halaqah"
+        : 'Santri • Kelas Belajar';
 
     return Scaffold(
       backgroundColor: AppColors.bgDark,
@@ -336,7 +336,7 @@ class DosenHomeTab extends ConsumerWidget {
           child: _buildStatItem(
             title: 'Total Kelas',
             value: '$totalClasses',
-            subtitle: 'Mata Kuliah',
+            subtitle: 'Mata Pelajaran',
             icon: Icons.class_outlined,
             color: AppColors.primary,
           ),
@@ -344,7 +344,7 @@ class DosenHomeTab extends ConsumerWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _buildStatItem(
-            title: 'Mahasiswa',
+            title: 'Santri',
             value: '$totalStudents',
             subtitle: 'Terdaftar',
             icon: Icons.groups_outlined,
@@ -356,7 +356,7 @@ class DosenHomeTab extends ConsumerWidget {
           child: _buildStatItem(
             title: 'Wajah Siap',
             value: '$totalFaces',
-            subtitle: 'Embeddings',
+            subtitle: 'Biometrik',
             icon: Icons.face_rounded,
             color: AppColors.accentPurple,
           ),
@@ -418,7 +418,7 @@ class DosenHomeTab extends ConsumerWidget {
       children: [
         Expanded(child: _buildStatItem(title: 'Total Kelas', value: '-', subtitle: '...', icon: Icons.class_outlined, color: AppColors.primary)),
         const SizedBox(width: 12),
-        Expanded(child: _buildStatItem(title: 'Mahasiswa', value: '-', subtitle: '...', icon: Icons.groups_outlined, color: AppColors.secondary)),
+        Expanded(child: _buildStatItem(title: 'Santri', value: '-', subtitle: '...', icon: Icons.groups_outlined, color: AppColors.secondary)),
         const SizedBox(width: 12),
         Expanded(child: _buildStatItem(title: 'Wajah Siap', value: '-', subtitle: '...', icon: Icons.face_rounded, color: AppColors.accentPurple)),
       ],
@@ -598,7 +598,7 @@ class DosenHomeTab extends ConsumerWidget {
                     const Icon(Icons.people_outline_rounded, size: 13, color: AppColors.primaryLight),
                     const SizedBox(width: 4),
                     Text(
-                      '${cls.studentCount} Mahasiswa',
+                      '${cls.studentCount} Santri',
                       style: const TextStyle(
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,

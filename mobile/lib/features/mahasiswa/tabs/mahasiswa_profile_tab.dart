@@ -27,7 +27,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
     final authState = ref.watch(authProvider);
     final user = authState.user;
 
-    final name = user?.fullName.isNotEmpty == true ? user!.fullName : 'Mahasiswa';
+    final name = user?.fullName.isNotEmpty == true ? user!.fullName : 'Santri';
     final nim = user?.identifier?.isNotEmpty == true ? user!.identifier! : '-';
 
     final faceStatusAsync = ref.watch(studentFaceStatusProvider(nim));
@@ -51,7 +51,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
               const SizedBox(height: 20),
               const Center(
                 child: Text(
-                  'SnapAttend v3.2.6 • Universitas Negeri Malang (UM)',
+                  'ABSAR (أَبْصَAR) • Next-Gen AI Vision Attendance',
                   style: TextStyle(
                     color: AppColors.textMuted,
                     fontSize: 11,
@@ -137,7 +137,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'NIM $nim',
+            'NIS $nim',
             style: const TextStyle(
               color: AppColors.primaryLight,
               fontSize: 13,
@@ -198,7 +198,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
     final nim = user?.identifier?.toString().trim() ?? '';
     if (nim.isEmpty || nim == '-') {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('NIM mahasiswa belum diatur di akun Anda.')),
+        const SnackBar(content: Text('NIS santri belum diatur di akun Anda.')),
       );
       return;
     }
@@ -206,7 +206,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
       final dio = ref.read(apiClientProvider);
       final res = await dio.get('/students/lookup', queryParameters: {'nim': nim});
       final studentId = res.data['id'] as int;
-      final studentName = (res.data['full_name'] ?? user?.fullName ?? 'Mahasiswa').toString();
+      final studentName = (res.data['full_name'] ?? user?.fullName ?? 'Santri').toString();
       final hasFaces = res.data['has_faces'] == true || res.data['has_faces'] == 1;
 
       if (!context.mounted) return;
@@ -247,7 +247,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
           _buildMenuItem(
             icon: Icons.person_outline_rounded,
             title: 'Informasi Akun',
-            subtitle: 'email, NIM, etc',
+            subtitle: 'email, NIS, dll',
             onTap: () => context.push('/mahasiswa/account'),
           ),
           const Divider(color: AppColors.border, height: 1, indent: 56),
@@ -405,7 +405,7 @@ class MahasiswaProfileTab extends ConsumerWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Text(
-                      'Pastikan pencahayaan ruangan cukup terang, posisi wajah tegak lurus menghadap kamera dosen, dan tidak terhalang masker atau kacamata gelap.',
+                      'Pastikan pencahayaan ruangan cukup terang, posisi wajah tegak lurus menghadap kamera ustadz, dan tidak terhalang masker atau kacamata gelap.',
                       style: TextStyle(color: AppColors.textMuted, fontSize: 12.5, height: 1.4),
                     ),
                   ),

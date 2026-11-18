@@ -151,13 +151,13 @@ class _AttendanceResultScreenState
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Pilih mahasiswa yang sesuai dengan wajah ini (BR-07, BR-08):',
+                        'Pilih santri yang sesuai dengan wajah ini:',
                         style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                       ),
                       const SizedBox(height: 12),
                       TextField(
                         decoration: InputDecoration(
-                          hintText: 'Cari nama atau NIM...',
+                          hintText: 'Cari nama atau NIS...',
                           prefixIcon: const Icon(Icons.search, size: 20),
                           contentPadding: const EdgeInsets.symmetric(vertical: 8),
                           border: OutlineInputBorder(
@@ -177,7 +177,7 @@ class _AttendanceResultScreenState
                             child: Text(
                               unidentList.isEmpty
                                   ? 'Semua peserta sudah hadir!'
-                                  : 'Mahasiswa tidak ditemukan',
+                                  : 'Santri tidak ditemukan',
                               style: const TextStyle(color: Colors.grey),
                             ),
                           ),
@@ -217,7 +217,7 @@ class _AttendanceResultScreenState
                                   subtitle: Row(
                                     children: [
                                       Text(
-                                        'NIM: ${st.nim}',
+                                        'NIS: ${st.nim}',
                                         style: TextStyle(
                                           fontSize: 11,
                                           color: Colors.grey.shade600,
@@ -327,7 +327,7 @@ class _AttendanceResultScreenState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Menyelesaikan sesi akan mengunci kehadiran mahasiswa dan mencatat poin resmi.',
+              'Menyelesaikan sesi akan mengunci kehadiran santri dan mencatat poin resmi.',
             ),
             const SizedBox(height: 12),
             Container(
@@ -341,7 +341,7 @@ class _AttendanceResultScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Perkiraan Poin Mahasiswa:',
+                    'Perkiraan Poin Santri:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                   SizedBox(height: 4),
@@ -428,7 +428,7 @@ class _AttendanceResultScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Sesi resmi ditutup. Poin mahasiswa kelas telah diperbarui.',
+                'Sesi resmi ditutup. Poin santri kelas telah diperbarui.',
                 style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
               ),
               const Divider(height: 16),
@@ -457,7 +457,7 @@ class _AttendanceResultScreenState
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  'NIM: ${r.nim} • ${isHadir ? "Hadir" : "Tidak Hadir"}',
+                                  'NIS: ${r.nim} • ${isHadir ? "Hadir" : "Tidak Hadir"}',
                                   style: TextStyle(
                                     fontSize: 11,
                                     color: isHadir ? Colors.green.shade700 : Colors.red.shade700,
@@ -596,7 +596,7 @@ class _AttendanceResultScreenState
                         const Icon(Icons.people, size: 18, color: Colors.indigo),
                         const SizedBox(width: 6),
                         Text(
-                          'Kehadiran: $identifiedCount / $total Mahasiswa',
+                          'Kehadiran: $identifiedCount / $total Santri',
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                         ),
                       ],

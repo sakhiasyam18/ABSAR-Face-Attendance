@@ -18,7 +18,12 @@ async def lifespan(app: FastAPI):
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="API Presensi Wajah", lifespan=lifespan)
+app = FastAPI(
+    title="ABSAR: Next-Gen AI Vision Attendance API",
+    description="Sistem Presensi Wajah Otomatis Berbasis InsightFace Buffalo_L & Hungarian Matching",
+    version="1.0.0",
+    lifespan=lifespan
+)
 
 app.add_exception_handler(AppError, app_error_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)

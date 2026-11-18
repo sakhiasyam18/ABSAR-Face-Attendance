@@ -130,9 +130,9 @@ class RosterScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildSummaryRow(Icons.person_add, Colors.blue, 'Mahasiswa Baru Ditambahkan: ${result.added}'),
+              _buildSummaryRow(Icons.person_add, Colors.blue, 'Santri Baru Ditambahkan: ${result.added}'),
               const SizedBox(height: 6),
-              _buildSummaryRow(Icons.link, Colors.indigo, 'Mahasiswa Terhubung: ${result.linkedExisting}'),
+              _buildSummaryRow(Icons.link, Colors.indigo, 'Santri Terhubung: ${result.linkedExisting}'),
               const SizedBox(height: 6),
               _buildSummaryRow(Icons.skip_next, Colors.grey, 'Dilewati (Sudah Ada di Kelas): ${result.skipped}'),
               if (result.warnings.isNotEmpty) ...[
@@ -216,7 +216,7 @@ class RosterScreen extends ConsumerWidget {
           children: [
             Icon(Icons.person_add_alt_1, color: Colors.indigo),
             SizedBox(width: 8),
-            Expanded(child: Text('Tambah Mahasiswa')),
+            Expanded(child: Text('Tambah Santri')),
           ],
         ),
         content: Form(
@@ -228,17 +228,17 @@ class RosterScreen extends ConsumerWidget {
                 controller: nimController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'NIM (12 Digit) *',
+                  labelText: 'NIS (12 Digit) *',
                   hintText: 'mis. 240535600363',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.badge_outlined),
                 ),
                 validator: (val) {
                   if (val == null || val.trim().isEmpty) {
-                    return 'NIM wajib diisi';
+                    return 'NIS wajib diisi';
                   }
                   if (!RegExp(r'^\d{12}$').hasMatch(val.trim())) {
-                    return 'NIM harus tepat 12 digit angka';
+                    return 'NIS harus tepat 12 digit angka';
                   }
                   return null;
                 },
@@ -297,7 +297,7 @@ class RosterScreen extends ConsumerWidget {
                   final errData = e.response?.data?['detail'];
                   final msg = errData is Map
                       ? (errData['message'] ?? errData['code'] ?? e.message)
-                      : (errData ?? e.message ?? 'Gagal menambahkan mahasiswa');
+                      : (errData ?? e.message ?? 'Gagal menambahkan santri');
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Error: $msg'), backgroundColor: Colors.red),
@@ -402,7 +402,7 @@ class RosterScreen extends ConsumerWidget {
                                   children: [
                                     Chip(
                                       avatar: const Icon(Icons.people, size: 16, color: Colors.indigo),
-                                      label: Text('${classDetail.students.length} / 15 Mahasiswa'),
+                                      label: Text('${classDetail.students.length} / 15 Santri'),
                                       visualDensity: VisualDensity.compact,
                                     ),
                                     Chip(
@@ -452,7 +452,7 @@ class RosterScreen extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Daftar Mahasiswa (${classDetail.students.length})',
+                              'Daftar Santri (${classDetail.students.length})',
                               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             if (classDetail.students.length >= 15)
@@ -569,7 +569,7 @@ class _StudentTile extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
         subtitle: Text(
-          'NIM: ${student.nim}',
+          'NIS: ${student.nim}',
           style: TextStyle(color: Colors.grey.shade700, fontSize: 13),
         ),
         trailing: _buildFaceStatusBadge(student.hasFaces),

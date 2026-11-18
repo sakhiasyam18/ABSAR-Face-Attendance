@@ -755,7 +755,7 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
             ),
             content: Text(
               'Kelima foto pose wajah untuk "${widget.studentName}" telah berhasil diverifikasi oleh AI InsightFace dan tersimpan di database server.\n\n'
-              'Mahasiswa ini sekarang siap dideteksi otomatis saat presensi kelas.',
+              'Santri ini sekarang siap dideteksi otomatis saat presensi kelas.',
             ),
             actions: [
               ElevatedButton(
@@ -1292,7 +1292,7 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  'NIM: ${widget.nim}',
+                                  'NIS: ${widget.nim}',
                                   style: const TextStyle(color: Colors.white70, fontSize: 12),
                                 ),
                               ],
@@ -1422,7 +1422,7 @@ class _CaptureScreenState extends ConsumerState<CaptureScreen> {
                   right: 0,
                   child: Center(
                     child: Text(
-                      'SnapAttend v3.2.6 • Universitas Negeri Malang (UM)',
+                      'ABSAR (أَبْصَAR) • Next-Gen AI Vision Attendance',
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.4),
                         fontSize: 9.5,

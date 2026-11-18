@@ -464,7 +464,7 @@ class _AttendanceCameraScreenState
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                'P${session.meetingNumber} • ${session.participants.length} Mahasiswa',
+                                'P${session.meetingNumber} • ${session.participants.length} Santri',
                                 style: const TextStyle(color: Colors.white70, fontSize: 12),
                               ),
                             ],
@@ -524,7 +524,7 @@ class _AttendanceCameraScreenState
                       Text(
                         _detectedFaceRects.isNotEmpty
                             ? 'Live AI: ${_detectedFaceRects.length} Wajah Terdeteksi'
-                            : 'Mencari wajah mahasiswa di kelas...',
+                            : 'Mencari wajah santri di kelas...',
                         style: TextStyle(
                           color: _detectedFaceRects.isNotEmpty
                               ? const Color(0xFF6EE7B7)
@@ -565,7 +565,7 @@ class _AttendanceCameraScreenState
                     child: Text(
                       _detectedFaceRects.isNotEmpty
                           ? 'Wajah ditandai lingkaran live. Tekan tombol kamera untuk mengenali!'
-                          : 'Arahkan kamera ke seluruh mahasiswa dalam ruangan kelas',
+                          : 'Arahkan kamera ke seluruh santri dalam ruangan kelas',
                       style: const TextStyle(color: Colors.white, fontSize: 12),
                       textAlign: TextAlign.center,
                     ),

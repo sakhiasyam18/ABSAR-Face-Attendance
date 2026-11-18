@@ -142,20 +142,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 // App Title & Tagline
                 const Text(
-                  'SnapAttend',
+                  'ABSAR',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 30,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: 0.5,
+                    letterSpacing: 1.0,
                     color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Sistem Presensi Wajah Cerdas Universitas Negeri Malang',
+                  'Next-Gen AI Vision for Classroom Attendance\n"Satu Jepretan Kelas Tanpa Titip Absen"',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 13.5,
+                    fontSize: 13,
                     color: AppColors.textSecondary,
                     height: 1.4,
                   ),
@@ -178,7 +178,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: 6),
                       const Text(
-                        'Masukkan email kampus dan kata sandi Anda',
+                        'Masukkan email lembaga dan kata sandi Anda',
                         style: TextStyle(
                           fontSize: 13,
                           color: AppColors.textMuted,
@@ -284,7 +284,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     border: Border.all(color: Colors.white10, width: 0.8),
                   ),
                   child: const Text(
-                    'SnapAttend v3.2.6 • Universitas Negeri Malang (UM)',
+                    'ABSAR (أَبْصَار) • Next-Gen AI Vision Attendance',
                     style: TextStyle(
                       color: AppColors.textMuted,
                       fontSize: 10.5,

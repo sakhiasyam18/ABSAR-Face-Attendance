@@ -143,7 +143,7 @@ class _PointCard extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
         subtitle: Text(
-          'NIM: ${item.nim}',
+          'NIS: ${item.nim}',
           style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
         ),
         trailing: Container(

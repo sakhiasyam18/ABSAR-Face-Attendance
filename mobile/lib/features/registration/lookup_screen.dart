@@ -80,11 +80,11 @@ class _LookupScreenState extends ConsumerState<LookupScreen> {
         _studentData = StudentLookupData.fromJson(response.data as Map<String, dynamic>);
       });
     } on DioException catch (e) {
-      String msg = 'Gagal melakukan verifikasi NIM';
+      String msg = 'Gagal melakukan verifikasi NIS';
       if (e.response?.statusCode == 404) {
-        msg = 'NIM belum terdaftar di kelas manapun. Hubungi dosen.';
+        msg = 'NIS belum terdaftar di kelas manapun. Hubungi Ustadz.';
       } else if (e.response?.statusCode == 422) {
-        msg = 'Format NIM tidak valid. Pastikan 12 digit angka.';
+        msg = 'Format NIS tidak valid. Pastikan 12 digit angka.';
       } else {
         final errData = e.response?.data?['detail'];
         if (errData is Map && errData['message'] != null) {
@@ -124,7 +124,7 @@ class _LookupScreenState extends ConsumerState<LookupScreen> {
           ),
           content: const Text(
             'Wajah Anda sudah terdaftar di sistem. Mendaftar ulang akan menimpa data wajah sebelumnya.\n\n'
-            'Pendaftaran ulang memerlukan izin dan pendampingan dari dosen (BR-14).\n\n'
+            'Pendaftaran ulang memerlukan izin dan pendampingan dari Ustadz.\n\n'
             'Apakah Anda yakin ingin melanjutkan?',
           ),
           actions: [
@@ -183,19 +183,19 @@ class _LookupScreenState extends ConsumerState<LookupScreen> {
             const Icon(Icons.face_retouching_natural, size: 72, color: Colors.indigo),
             const SizedBox(height: 12),
             const Text(
-              'Verifikasi Identitas Mahasiswa',
+              'Verifikasi Identitas Santri',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 6),
             const Text(
-              'Masukkan NIM yang telah didaftarkan dosen ke dalam roster kelas.',
+              'Masukkan NIS yang telah didaftarkan Ustadz ke dalam roster kelas.',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey, fontSize: 13),
             ),
             const SizedBox(height: 24),
 
-            // Form Input NIM
+            // Form Input NIS
             Form(
               key: _formKey,
               child: TextFormField(
@@ -203,7 +203,7 @@ class _LookupScreenState extends ConsumerState<LookupScreen> {
                 keyboardType: TextInputType.number,
                 maxLength: 12,
                 decoration: InputDecoration(
-                  labelText: 'Nomor Induk Mahasiswa (NIM)',
+                  labelText: 'Nomor Induk Santri (NIS)',
                   hintText: 'mis. 240535600363',
                   prefixIcon: const Icon(Icons.badge_outlined),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -211,10 +211,10 @@ class _LookupScreenState extends ConsumerState<LookupScreen> {
                 ),
                 validator: (val) {
                   if (val == null || val.trim().isEmpty) {
-                    return 'NIM wajib diisi';
+                    return 'NIS wajib diisi';
                   }
                   if (!RegExp(r'^\d{12}$').hasMatch(val.trim())) {
-                    return 'NIM harus tepat 12 digit angka (BR-01)';
+                    return 'NIS harus tepat 12 digit angka';
                   }
                   return null;
                 },
@@ -230,7 +230,7 @@ class _LookupScreenState extends ConsumerState<LookupScreen> {
                       child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                     )
                   : const Icon(Icons.search),
-              label: Text(_isLoading ? 'Memeriksa...' : 'Cari Data Mahasiswa'),
+              label: Text(_isLoading ? 'Memeriksa...' : 'Cari Data Santri'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.indigo,
                 foregroundColor: Colors.white,
@@ -293,7 +293,7 @@ class _LookupScreenState extends ConsumerState<LookupScreen> {
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
-                                  'NIM: ${_studentData!.nim}',
+                                  'NIS: ${_studentData!.nim}',
                                   style: TextStyle(color: Colors.grey.shade700, fontSize: 13),
                                 ),
                               ],

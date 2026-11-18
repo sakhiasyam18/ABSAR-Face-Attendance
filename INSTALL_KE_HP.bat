@@ -1,9 +1,10 @@
 @echo off
-title Pasang SnapAttend v3.2.6 ke HP
+title Pasang ABSAR ke HP
 cd /d "%~dp0"
 
 echo ========================================================
-echo        PASANG SNAPATTEND v3.2.6 LANGSUNG KE HP
+echo        PASANG ABSAR FACE ATTENDANCE KE HP
+echo        "Satu Jepretan Kelas Tanpa Titip Absen"
 echo ========================================================
 echo.
 
@@ -16,26 +17,35 @@ echo 1. Memeriksa koneksi HP...
 echo.
 
 echo 2. Memastikan file APK resmi terbaru...
-copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0SnapAttend-v3.2.6.apk" >nul
+if exist "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" (
+    copy /Y "%~dp0mobile\build\app\outputs\flutter-apk\app-release.apk" "%~dp0ABSAR-Face-Attendance.apk" >nul
+)
+
+set TARGET_APK="%~dp0ABSAR-Face-Attendance.apk"
+if not exist %TARGET_APK% (
+    if exist "%~dp0SnapAttend-v3.2.6.apk" (
+        set TARGET_APK="%~dp0SnapAttend-v3.2.6.apk"
+    )
+)
 
 echo 3. Menginstall APK ke HP Anda...
-%ADB_BIN% install -r "%~dp0SnapAttend-v3.2.6.apk"
+%ADB_BIN% install -r %TARGET_APK%
 if %errorlevel% neq 0 (
     echo.
     echo [INFO] Jika install gagal, mencoba uninstall versi lama terlebih dahulu...
     %ADB_BIN% uninstall com.example.mobile
-    %ADB_BIN% install "%~dp0SnapAttend-v3.2.6.apk"
+    %ADB_BIN% install %TARGET_APK%
 )
 
 echo.
 echo 4. Mengaktifkan Mode USB (Port 8000)...
 %ADB_BIN% reverse tcp:8000 tcp:8000
 
-echo 5. Membuka SnapAttend di HP...
+echo 5. Membuka ABSAR di HP...
 %ADB_BIN% shell monkey -p com.example.mobile -c android.intent.category.LAUNCHER 1
 
 echo.
 echo ========================================================
-echo [BERHASIL] SnapAttend v3.2.6 sudah terpasang dan terbuka di HP Anda!
+echo [BERHASIL] ABSAR Face Attendance sudah terpasang dan terbuka di HP Anda!
 echo ========================================================
 pause

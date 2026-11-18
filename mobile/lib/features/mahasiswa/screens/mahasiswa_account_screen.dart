@@ -15,10 +15,10 @@ class MahasiswaAccountScreen extends ConsumerWidget {
     final authState = ref.watch(authProvider);
     final user = authState.user;
 
-    final name = user?.fullName.isNotEmpty == true ? user!.fullName : 'Mahasiswa';
+    final name = user?.fullName.isNotEmpty == true ? user!.fullName : 'Santri';
     final nim = user?.identifier?.isNotEmpty == true ? user!.identifier! : '-';
     final email = user?.email.isNotEmpty == true ? user!.email : '-';
-    final prodi = user?.programStudy?.isNotEmpty == true ? user!.programStudy! : 'Program Studi Belum Diatur';
+    final prodi = user?.programStudy?.isNotEmpty == true ? user!.programStudy! : "Lembaga / Ma'had Belum Diatur";
 
     return Scaffold(
       backgroundColor: AppColors.bgDark,
@@ -80,7 +80,7 @@ class MahasiswaAccountScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'NIM $nim',
+                      'NIS $nim',
                       style: const TextStyle(
                         color: AppColors.primaryLight,
                         fontSize: 13,
@@ -109,9 +109,9 @@ class MahasiswaAccountScreen extends ConsumerWidget {
                     const SizedBox(height: 16),
                     _buildFieldRow(label: 'Email', value: email, icon: Icons.email_outlined),
                     const Divider(color: AppColors.border, height: 24),
-                    _buildFieldRow(label: 'NIM', value: nim, icon: Icons.badge_outlined),
+                    _buildFieldRow(label: 'NIS (Nomor Induk Santri)', value: nim, icon: Icons.badge_outlined),
                     const Divider(color: AppColors.border, height: 24),
-                    _buildFieldRow(label: 'Program Studi', value: prodi, icon: Icons.school_outlined),
+                    _buildFieldRow(label: "Lembaga / Ma'had", value: prodi, icon: Icons.school_outlined),
                     const Divider(color: AppColors.border, height: 24),
                     _buildFieldRow(label: 'Status Akun', value: 'Active', isStatus: true),
                   ],
@@ -133,7 +133,7 @@ class MahasiswaAccountScreen extends ConsumerWidget {
                     final dio = ref.read(apiClientProvider);
                     final res = await dio.get('/students/lookup', queryParameters: {'nim': sNim});
                     final studentId = res.data['id'] as int;
-                    final studentName = (res.data['full_name'] ?? user?.fullName ?? 'Mahasiswa').toString();
+                    final studentName = (res.data['full_name'] ?? user?.fullName ?? 'Santri').toString();
                     final hasFaces = res.data['has_faces'] == true || res.data['has_faces'] == 1;
 
                     if (!context.mounted) return;
