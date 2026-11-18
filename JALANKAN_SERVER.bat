@@ -1,10 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
-title Server Backend ABSAR Face Attendance
+title Server Backend Presensi Wajah (ABSAR & SnapAttend)
 cd /d "%~dp0backend"
 
 echo ========================================================
-echo       MENJALANKAN SERVER BACKEND ABSAR
+echo   SERVER BACKEND PRESENSI WAJAH TERPADU
+echo   Melayani Aplikasi: ABSAR & SnapAttend (Database Bersama)
 echo ========================================================
 echo.
 

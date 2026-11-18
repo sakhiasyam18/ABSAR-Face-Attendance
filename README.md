@@ -201,24 +201,22 @@ flowchart TD
 
 ---
 
-### 2. Memasang & Menjalankan Aplikasi Mobile (ABSAR)
+### 2. Memasang & Menjalankan Aplikasi Mobile (ABSAR & SnapAttend)
 
-* **Opsi A: Memasang APK Otomatis ke HP via Script (Paling Mudah)**
-  Hubungkan HP dengan USB Debugging aktif, lalu dobel klik:
-  👉 **`INSTALL_KE_HP.bat`**
-  *(Skrip akan otomatis meng-install `ABSAR-Face-Attendance.apk`, mengaktifkan jalur USB 8000, dan langsung membuka aplikasi di HP).*
+Kedua aplikasi dapat dipasang berdampingan di satu HP tanpa saling menimpa karena memiliki ID paket (*Application ID*) yang berbeda:
 
-* **Opsi B: Membangun Ulang APK Sendiri (Build Release)**
-  Dobel klik:
-  👉 **`BUILD_APK.bat`**
-  *(Skrip akan mengompilasi Flutter release, menyalin output APK resmi, memasangnya ke HP, dan menyalakan backend secara simultan).*
+* 🟢 **Aplikasi ABSAR (Lomba: Ustadz & Santri — `com.absar.attendance`)**:
+  * **Build & Pasang Otomatis**: Dobel klik 👉 **`BUILD_ABSAR.bat`**
+  * **Pasang Cepat (Tanpa Kompilasi Ulang)**: Dobel klik 👉 **`INSTALL_ABSAR.bat`**
+  * **Kode Sumber**: Folder `mobile_absar/`
 
-* **Opsi C: Menjalankan Mode Pengembangan (Debug Mode)**
-  ```powershell
-  cd d:\ABSAR-Face-Attendance\mobile
-  flutter pub get
-  flutter run
-  ```
+* 🔵 **Aplikasi SnapAttend (Kuliah: Dosen & Mahasiswa — `com.um.snapattend`)**:
+  * **Build & Pasang Otomatis**: Dobel klik 👉 **`BUILD_SNAPATTEND.bat`**
+  * **Pasang Cepat (Tanpa Kompilasi Ulang)**: Dobel klik 👉 **`INSTALL_SNAPATTEND.bat`**
+  * **Kode Sumber**: Folder `mobile_snapattend/`
+
+> [!NOTE]
+> **Database Bersama (Shared Database)**: Kedua aplikasi di HP terhubung ke server backend lokal yang sama (`http://127.0.0.1:8000` via USB atau Wi-Fi). Data wajah santri/mahasiswa yang didaftarkan di ABSAR otomatis dapat langsung dikenali di SnapAttend, begitu juga sebaliknya!
 
 ---
 
@@ -276,12 +274,15 @@ Cocok digunakan jika laptop dan HP terhubung pada satu jaringan Wi-Fi / Hotspot 
 
 ```text
 ABSAR-Face-Attendance/
-├── ABSAR-Face-Attendance.apk       # File APK Rilis Resmi Siap Pasang Android
-├── BUILD_APK.bat                   # 1-Klik Build APK & Jalankan Sistem Terpadu
-├── INSTALL_KE_HP.bat               # 1-Klik Pasang APK ke HP via USB ADB
-├── JALANKAN_SERVER.bat             # 1-Klik Jalankan Backend FastAPI + Deteksi IP
-├── HUBUNGKAN_USB.bat               # 1-Klik Hubungkan Port USB (ADB Reverse Tunnel)
-├── backend/                        # Layanan Backend AI (Python / FastAPI)
+├── ABSAR-Face-Attendance.apk       # File APK Rilis Resmi ABSAR (com.absar.attendance)
+├── SnapAttend-v3.2.6.apk           # File APK Rilis Resmi SnapAttend (com.um.snapattend)
+├── BUILD_ABSAR.bat                 # 1-Klik Build & Pasang ABSAR ke HP
+├── BUILD_SNAPATTEND.bat            # 1-Klik Build & Pasang SnapAttend ke HP
+├── INSTALL_ABSAR.bat               # 1-Klik Pasang Cepat APK ABSAR ke HP
+├── INSTALL_SNAPATTEND.bat          # 1-Klik Pasang Cepat APK SnapAttend ke HP
+├── JALANKAN_SERVER.bat             # 1-Klik Jalankan Backend FastAPI (Melayani Kedua Aplikasi)
+├── HUBUNGKAN_USB.bat               # 1-Klik Hubungkan Port USB 8000 (Melayani Kedua Aplikasi)
+├── backend/                        # Layanan Backend AI (Python / FastAPI) & Database Bersama
 │   ├── app/
 │   │   ├── core/                   # Konfigurasi, Database Engine, & Keamanan
 │   │   ├── models/                 # Model Tabel SQLAlchemy ORM
@@ -290,28 +291,22 @@ ABSAR-Face-Attendance/
 │   │   ├── services/               # Mesin InsightFace AI ArcFace & Algoritma Hungarian
 │   │   └── main.py                 # Titik Masuk Utama FastAPI
 │   ├── .env                        # Hyperparameter Ambang Batas Deteksi Wajah
-│   ├── presensi.db                 # Database SQLite Utama (Mode WAL)
+│   ├── presensi.db                 # Database SQLite Utama Bersama (Mode WAL)
 │   ├── requirements.txt            # Dependensi Pustaka Python
 │   └── reset_db.py                 # Utilitas Pembersih & Reset Database
 ├── docs/                           # Dokumentasi & Berkas Lomba Resmi
 │   ├── images/                     # Tangkapan Layar Demo Antarmuka Aplikasi
 │   ├── PROPOSAL_INOVASI_LOMBA_ABSAR.md # Dokumen Proposal & Pitch Deck Lomba
 │   ├── DESIGN SPEC ... .md         # Spesifikasi Arsitektur Sistem Terpadu
-│   └── MANUAL_BOOK_PANDUAN ... .md # Buku Panduan Penggunaan Resmi Ustadz & Santri
-├── mobile/                         # Aplikasi Klien Android (Flutter / Dart)
-│   ├── lib/
-│   │   ├── app/                    # Routing, Tema Luxury, & State Riverpod
-│   │   ├── core/                   # Utilitas Kualitas Citra, EXIF, & Client Dio
-│   │   ├── features/
-│   │   │   ├── attendance/         # Kamera Kelas Live Circles & Hasil Deteksi AI
-│   │   │   ├── auth/               # Autentikasi Ustadz & Santri
-│   │   │   ├── classes/            # Manajemen Halaqah, Roster, & Papan Peringkat
-│   │   │   ├── dosen/              # Antarmuka Khusus Dashboard Ustadz
-│   │   │   ├── mahasiswa/          # Antarmuka Khusus Portal Santri
-│   │   │   ├── registration/       # Registrasi 5 Pose dengan Live Sensor HUD (X, Y, Z)
-│   │   │   └── settings/           # Konfigurasi IP Backend & Pilihan Jaringan
-│   │   └── main.dart               # Titik Masuk Utama Aplikasi Flutter
-│   └── pubspec.yaml                # Dependensi Mobile Flutter
+│   └── MANUAL_BOOK_PANDUAN ... .md # Buku Panduan Penggunaan Resmi
+├── mobile_absar/                   # Klien Android ABSAR (Lomba: Ustadz & Santri)
+│   ├── android/app/build.gradle.kts # Package: com.absar.attendance
+│   ├── lib/                        # Antarmuka Resmi ABSAR
+│   └── pubspec.yaml                # Dependensi Mobile ABSAR
+├── mobile_snapattend/              # Klien Android SnapAttend (Kuliah: Dosen & Mahasiswa)
+│   ├── android/app/build.gradle.kts # Package: com.um.snapattend
+│   ├── lib/                        # Antarmuka Asli SnapAttend v3.2.6
+│   └── pubspec.yaml                # Dependensi Mobile SnapAttend
 ├── .gitignore                      # Konfigurasi Eksklusi File Git
 └── README.md                       # Dokumentasi Resmi Proyek
 ```

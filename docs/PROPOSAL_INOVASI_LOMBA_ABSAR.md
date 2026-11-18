@@ -15,8 +15,8 @@
 
 **Disusun Oleh: Tim Pengembang ABSAR**
 * **Ketua Tim / Lead Developer:** Asyam Sakhi Maulana (NIM: 240535600363)
-* **Anggota Tim / Co-Developer:** Daffa Aleia Amrita Waskitha (NIM: 240535612453)
-* **Perguruan Tinggi:** S1 Teknik Informatika — Universitas Negeri Malang (UM)
+* **Anggota Tim / Co-Developer:** Emil Mustafidul Walida Ismani (NIM: 240342604456)
+* **Perguruan Tinggi:** S1 Teknik Informatika & S1 Biologi — Universitas Negeri Malang (UM)
 * **Tahun:** 2026
 
 ---
@@ -220,12 +220,12 @@ Berdasarkan pengujian internal pada dataset ruangan kelas dan pencahayaan dinami
 
 ## 10. Profil Tim Pengembang
 
-Karya inovasi ini dikembangkan secara kolaboratif oleh mahasiswa Departemen Teknik Elektro dan Informatika, Fakultas Teknik, **Universitas Negeri Malang (UM)**:
+Karya inovasi ini dikembangkan secara kolaboratif interdisipliner oleh mahasiswa Fakultas Teknik dan Fakultas MIPA, **Universitas Negeri Malang (UM)**:
 
-* **Asyam Sakhi Maulana** (NIM: 240535600363)
+* **Asyam Sakhi Maulana** (NIM: 240535600363 — S1 Teknik Informatika)
   * *Peran*: Ketua Tim, Arsitek Sistem AI Backend (FastAPI, InsightFace, Hungarian Matching Algorithm), dan Desain Integrasi Sensor HUD.
-* **Daffa Aleia Amrita Waskitha** (NIM: 240535612453)
-  * *Peran*: Anggota Tim, Pengembang Frontend Mobile (Flutter, Riverpod State Management, Camera Preview Overlays), dan Dokumentasi Teknis.
+* **Emil Mustafidul Walida Ismani** (NIM: 240342604456 — S1 Biologi)
+  * *Peran*: Anggota Tim, Analisis Biometrik & Pengujian Kebutuhan Pengguna, Validasi Lapangan, dan Dokumentasi Teknis.
 
 ---
 

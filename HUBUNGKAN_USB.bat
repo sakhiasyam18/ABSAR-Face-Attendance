@@ -1,7 +1,8 @@
 @echo off
-title Hubungkan USB Tunnel ABSAR
+title Hubungkan USB Tunnel (ABSAR & SnapAttend)
 echo ========================================================
 echo       HUBUNGKAN PORT USB (ADB REVERSE TUNNEL)
+echo       Jalur Data Port 8000 untuk ABSAR & SnapAttend
 echo ========================================================
 set ADB_BIN=adb
 if exist "C:\Program Files\ASUS\GlideX\adb.exe" set ADB_BIN="C:\Program Files\ASUS\GlideX\adb.exe"
