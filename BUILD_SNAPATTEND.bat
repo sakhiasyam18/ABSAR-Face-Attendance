@@ -75,7 +75,7 @@ echo Mengaktifkan jalur USB Port 8000 (Mode USB)...
 %ADB_BIN% reverse tcp:8000 tcp:8000
 
 echo Membuka aplikasi SnapAttend di HP...
-%ADB_BIN% shell monkey -p com.um.snapattend -c android.intent.category.LAUNCHER 1
+%ADB_BIN% shell am start -n com.um.snapattend/com.example.mobile.MainActivity
 echo.
 echo [SUKSES HP] SnapAttend v3.2.6 berhasil terpasang dan dibuka di HP Anda!
 

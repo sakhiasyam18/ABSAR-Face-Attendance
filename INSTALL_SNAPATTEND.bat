@@ -37,7 +37,7 @@ echo 3. Mengaktifkan Mode USB (Port 8000)...
 %ADB_BIN% reverse tcp:8000 tcp:8000
 
 echo 4. Membuka SnapAttend di HP...
-%ADB_BIN% shell monkey -p com.um.snapattend -c android.intent.category.LAUNCHER 1
+%ADB_BIN% shell am start -n com.um.snapattend/com.example.mobile.MainActivity
 
 echo.
 echo ========================================================

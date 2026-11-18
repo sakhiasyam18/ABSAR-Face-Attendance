@@ -75,7 +75,7 @@ echo Mengaktifkan jalur USB Port 8000 (Mode USB)...
 %ADB_BIN% reverse tcp:8000 tcp:8000
 
 echo Membuka aplikasi ABSAR di HP...
-%ADB_BIN% shell monkey -p com.absar.attendance -c android.intent.category.LAUNCHER 1
+%ADB_BIN% shell am start -n com.absar.attendance/com.example.mobile.MainActivity
 echo.
 echo [SUKSES HP] ABSAR berhasil terpasang dan dibuka di HP Anda!
 
