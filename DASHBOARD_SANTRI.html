@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Data Santri & Wajah - ABSAR</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --primary: #10b981;
+      --primary-glow: rgba(16, 185, 129, 0.2);
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.2);
+      --blue: #3b82f6;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --danger: #ef4444;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+    }
+    .title-group h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .arabic {
+      color: var(--gold);
+      font-size: 30px;
+      font-family: 'Amiri', 'Traditional Arabic', serif;
+    }
+    .tagline {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    }
+    .btn-outline {
+      background: var(--card-bg);
+      color: var(--text);
+      border-color: var(--card-border);
+    }
+    .btn-outline:hover {
+      background: #1f2937;
+      border-color: #374151;
+    }
+
+    /* Stat Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: #374151;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: transparent;
+    }
+    .stat-card.emerald::before { background: var(--primary); }
+    .stat-card.gold::before { background: var(--gold); }
+    .stat-card.blue::before { background: var(--blue); }
+    .stat-card.rose::before { background: var(--danger); }
+    
+    .stat-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 8px 0 4px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .stat-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Search & Filter Bar */
+    .filter-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 11px 16px 11px 40px;
+      background: #0d131f;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: white;
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #1f2937;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .pill:hover {
+      color: white;
+    }
+    .pill.active {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    /* Data Table */
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13.5px;
+    }
+    th {
+      background: #0d131f;
+      padding: 14px 18px;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid #1f2937;
+      vertical-align: middle;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .nim-badge {
+      font-family: monospace;
+      font-weight: 700;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+    .name-col {
+      font-weight: 600;
+      color: #fff;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .status-badge.registered {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .status-badge.unregistered {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .pose-tags {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    .pose-tag {
+      font-size: 10.5px;
+      padding: 2px 7px;
+      background: #1f2937;
+      border-radius: 4px;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+    .att-badge {
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .att-badge.present {
+      background: rgba(16, 185, 129, 0.18);
+      color: #10b981;
+    }
+    .att-badge.absent {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+    }
+    .att-badge.none {
+      background: #1f2937;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Top Header -->
+    <div class="header">
+      <div class="title-group">
+        <h1>
+          <span>ABSAR</span>
+          <span class="arabic">أَبْصَار</span>
+        </h1>
+        <p class="tagline">Next-Gen AI Vision Attendance • Dashboard Visual Data Santri & Wajah</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="window.location.reload();">🔄 Refresh Data</button>
+        <button class="btn btn-outline" onclick="exportToCSV();">📥 Unduh CSV</button>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-label">Total Santri</div>
+        <div class="stat-val">50 <span style="font-size: 14px; font-weight: normal; color: var(--text-muted);">Siswa</span></div>
+        <div class="stat-sub">Terdaftar di Basis Data</div>
+      </div>
+      <div class="stat-card emerald">
+        <div class="stat-label">Wajah Terdaftar (Siap Absen)</div>
+        <div class="stat-val" style="color: #34d399;">30 <span style="font-size: 14px; font-weight: normal; color: #10b981;">(60.0%)</span></div>
+        <div class="stat-sub">Siap Dideteksi Kamera</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-label">Belum Rekam Wajah</div>
+        <div class="stat-val" style="color: #fbbf24;">20 <span style="font-size: 14px; font-weight: normal; color: var(--text-muted);">Siswa</span></div>
+        <div class="stat-sub">Menunggu Perekaman HP</div>
+      </div>
+      <div class="stat-card emerald">
+        <div class="stat-label">Total Vektor Pose AI</div>
+        <div class="stat-val" style="color: #6ee7b7;">113 <span style="font-size: 14px; font-weight: normal; color: var(--text-muted);">Vektor</span></div>
+        <div class="stat-sub">InsightFace 512-Dimensi</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-label">Sesi 19 Nov (Hari Ini)</div>
+        <div class="stat-val" style="color: #60a5fa;">4 <span style="font-size: 14px; font-weight: normal; color: var(--text-muted);">Hadir</span></div>
+        <div class="stat-sub">yang laki laki aja - 2026-11-19 18:49</div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="filter-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="Cari berdasarkan Nama atau NIM..." oninput="filterData()">
+      </div>
+      <div class="filter-pills">
+        <div class="pill active" onclick="setFilter('all', this)">Semua Santri (50)</div>
+        <div class="pill" onclick="setFilter('registered', this)">✅ Wajah Terdaftar (30)</div>
+        <div class="pill" onclick="setFilter('unregistered', this)">⏳ Belum Terdaftar (20)</div>
+        <div class="pill" onclick="setFilter('present', this)">🎯 Hadir Hari Ini (4)</div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 50px;">No</th>
+            <th>NIM / NIS</th>
+            <th>Nama Santri</th>
+            <th>Status Wajah</th>
+            <th>Pose Tersimpan (AI Vektor)</th>
+            <th>Sesi 19 Nov (Presensi)</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody">
+          <!-- Populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      ABSAR (أَبْصَار) • Satu Jepretan Kelas Tanpa Titip Absen • Terhubung ke Database presensi.db
+    </div>
+  </div>
+
+  <script>
+    const students = [{"id": 8, "nim": "260535658387", "name": "ABDURRABB RASUL SAYYAF", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 11, "nim": "260535652226", "name": "ADVAN DAFFA PAMUNGKAS", "is_registered": true, "pose_count": 1, "poses": ["Bawah"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 13, "nim": "260535646628", "name": "AHMAD IBROHIM SHOFIYULLAH", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 14, "nim": "260535655850", "name": "AHMAD WILDAN SHOFIYULLOH", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 16, "nim": "260535650029", "name": "AINUN NISA", "is_registered": true, "pose_count": 2, "poses": ["Atas", "Bawah"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 18, "nim": "260535647582", "name": "ALVINO NUGRAHA LANGIT", "is_registered": true, "pose_count": 4, "poses": ["Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 19, "nim": "260535655018", "name": "ALYA AZIZA RAMADHANI", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 21, "nim": "260535649775", "name": "ANANDHIKA RIZALDY", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 22, "nim": "260535652216", "name": "ANDI YASIRUL MUTTAQIN", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 23, "nim": "260535646863", "name": "ANJAR JATI KUMARA", "is_registered": true, "pose_count": 3, "poses": ["Atas", "Bawah", "Depan"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 25, "nim": "260535655585", "name": "ATHALLARIQH RAFIF IZZAM", "is_registered": true, "pose_count": 3, "poses": ["Atas", "Bawah", "Kanan"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 48, "nim": "240722606470", "name": "Alpan", "is_registered": true, "pose_count": 2, "poses": ["Atas", "Depan"], "att_status": "tidak_hadir", "att_score": null, "att_time": "2026-11-19 11:49:57"}, {"id": 1, "nim": "240535600363", "name": "Asyam Sakhi", "is_registered": true, "pose_count": 4, "poses": ["Atas", "Bawah", "Kanan", "Kiri"], "att_status": "hadir", "att_score": 47.8, "att_time": "2026-11-19 11:49:48"}, {"id": 32, "nim": "260535656124", "name": "DANISWARA ZHAFRAN WIRATAMA", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 33, "nim": "260535656185", "name": "DIKA KAYLA MUZACKY", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 35, "nim": "260535658299", "name": "EKA YOGA ADITYA", "is_registered": true, "pose_count": 4, "poses": ["Atas", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 37, "nim": "260535655489", "name": "EWA DIWAN NOVIANTO", "is_registered": true, "pose_count": 3, "poses": ["Atas", "Depan", "Kanan"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 39, "nim": "260535656853", "name": "FARIS SYARIF MAULANA", "is_registered": true, "pose_count": 3, "poses": ["Atas", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 40, "nim": "260535649406", "name": "MUHAMMAD ZAKI ALIYYUDIN", "is_registered": true, "pose_count": 3, "poses": ["Atas", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 6, "nim": "240811600051", "name": "Muhammad Nashir Rusydani", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 45, "nim": "260535650089", "name": "NADILA ZAHRA' DZAKIYYAH", "is_registered": true, "pose_count": 4, "poses": ["Atas", "Bawah", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 46, "nim": "260535650159", "name": "NASHRUL ILMAN ROSYADAN", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 47, "nim": "260535657524", "name": "NAUFAL FITRAH MAHESWARA", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 7, "nim": "250911718173", "name": "aldi", "is_registered": true, "pose_count": 1, "poses": ["Atas"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 5, "nim": "240342604456", "name": "emil", "is_registered": true, "pose_count": 4, "poses": ["Atas", "Bawah", "Kanan", "Kiri"], "att_status": "tidak_hadir", "att_score": null, "att_time": "2026-11-19 11:49:57"}, {"id": 49, "nim": "240516601030", "name": "irsyad", "is_registered": true, "pose_count": 4, "poses": ["Atas", "Bawah", "Kanan", "Kiri"], "att_status": "hadir", "att_score": 48.7, "att_time": "2026-11-19 11:49:48"}, {"id": 3, "nim": "240535602618", "name": "mukaromah", "is_registered": true, "pose_count": 2, "poses": ["Atas", "Bawah"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 2, "nim": "240535605090", "name": "rifky", "is_registered": true, "pose_count": 5, "poses": ["Atas", "Bawah", "Depan", "Kanan", "Kiri"], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 4, "nim": "240543610845", "name": "rifqi", "is_registered": true, "pose_count": 2, "poses": ["Atas", "Bawah"], "att_status": "hadir", "att_score": 64.7, "att_time": "2026-11-19 11:49:48"}, {"id": 50, "nim": "240631602604", "name": "rizal", "is_registered": true, "pose_count": 4, "poses": ["Atas", "Bawah", "Depan", "Kanan"], "att_status": "hadir", "att_score": 41.4, "att_time": "2026-11-19 11:49:48"}, {"id": 9, "nim": "260535652548", "name": "ABIYYU DWI TIRTA", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 10, "nim": "260535656440", "name": "ACHMAD ROFIF SHOFIUDIN", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 12, "nim": "260535647418", "name": "AHMAD ARIF HIDAYATULLOH", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 15, "nim": "260535650667", "name": "AHMAD YUSUF NUR WAHID", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 17, "nim": "260535657816", "name": "ALI SODIKIN", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 20, "nim": "260535649038", "name": "ALYA NURIN SAFITRI", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 24, "nim": "260535650492", "name": "ARYA WIRATMAJA ROFIF SUDIBYO", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 26, "nim": "260535656675", "name": "AURIEL DALVARIS TARUK BUA", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 27, "nim": "260535651965", "name": "AZALEA ALINA KAYSA", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 28, "nim": "260535654522", "name": "BENEDICTO NOEL DAVIDSON", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 29, "nim": "260535655667", "name": "BINTANG RACHMAD HIDAYAT", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 30, "nim": "260535655813", "name": "DAMARWULAN PERMANA PUTRA MULYO", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 31, "nim": "260535656767", "name": "DANISH AS-SALAFY RACHMAN", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 34, "nim": "260535655632", "name": "DZAKIYYAH HANUUN", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 36, "nim": "260535657993", "name": "ELIA CAROLINE KOOSNADI", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 38, "nim": "260535658058", "name": "FAIZ AHMAD SULAIMAN", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 42, "nim": "260535647318", "name": "M WAHYU AYESHA", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 41, "nim": "260535654630", "name": "MUHAMMAD ZAKI REVALDI", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 43, "nim": "260535656091", "name": "NABIL MUSADDAD HILMI", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}, {"id": 44, "nim": "260535654233", "name": "NADHIRA", "is_registered": false, "pose_count": 0, "poses": [], "att_status": "belum_absen", "att_score": null, "att_time": null}];
+    let currentFilter = 'all';
+
+    function renderTable(list) {
+      const tbody = document.getElementById('studentTableBody');
+      tbody.innerHTML = '';
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">Tidak ada data santri yang cocok dengan pencarian / filter.</td></tr>`;
+        return;
+      }
+
+      list.forEach((s, idx) => {
+        const tr = document.createElement('tr');
+
+        // Status badge
+        const statusBadge = s.is_registered 
+          ? `<span class="status-badge registered">✅ Terdaftar (${s.pose_count} Pose)</span>`
+          : `<span class="status-badge unregistered">⏳ Belum Ada Wajah</span>`;
+
+        // Poses chips
+        let posesHtml = '<span style="color: var(--text-muted); font-size: 12px;">-</span>';
+        if (s.poses && s.poses.length > 0) {
+          posesHtml = `<div class="pose-tags">` + s.poses.map(p => `<span class="pose-tag">${p}</span>`).join('') + `</div>`;
+        }
+
+        // Attendance badge
+        let attHtml = `<span class="att-badge none">-</span>`;
+        if (s.att_status === 'hadir') {
+          const scoreText = s.att_score ? ` (${s.att_score}%)` : '';
+          attHtml = `<span class="att-badge present">✅ Hadir${scoreText}</span>`;
+        } else if (s.att_status === 'tidak_hadir') {
+          attHtml = `<span class="att-badge absent">❌ Belum Hadir</span>`;
+        }
+
+        tr.innerHTML = `
+          <td style="color: var(--text-muted); font-weight: 600;">${idx + 1}</td>
+          <td><span class="nim-badge">${s.nim}</span></td>
+          <td class="name-col">${s.name}</td>
+          <td>${statusBadge}</td>
+          <td>${posesHtml}</td>
+          <td>${attHtml}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterData() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      
+      const filtered = students.filter(s => {
+        // Match Search
+        const matchSearch = s.name.toLowerCase().includes(query) || s.nim.includes(query);
+        if (!matchSearch) return false;
+
+        // Match Filter Pill
+        if (currentFilter === 'registered') return s.is_registered;
+        if (currentFilter === 'unregistered') return !s.is_registered;
+        if (currentFilter === 'present') return s.att_status === 'hadir';
+        return true;
+      });
+
+      renderTable(filtered);
+    }
+
+    function setFilter(type, el) {
+      currentFilter = type;
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      filterData();
+    }
+
+    function exportToCSV() {
+      let csv = "No,NIM,Nama,Status Wajah,Jumlah Pose,Pose,Status Presensi,Akurasi\n";
+      students.forEach((s, i) => {
+        const status = s.is_registered ? "Terdaftar" : "Belum";
+        const poses = s.poses ? s.poses.join("; ") : "";
+        const att = s.att_status || "";
+        const score = s.att_score || "";
+        csv += `"${i+1}","${s.nim}","${s.name}","${status}","${s.pose_count}","${poses}","${att}","${score}"\n`;
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Data_Santri_ABSAR_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Initial render
+    renderTable(students);
+  </script>
+</body>
+</html>

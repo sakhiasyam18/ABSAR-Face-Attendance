@@ -6,6 +6,7 @@ __pycache__/
 # Database temporary files
 *.db-shm
 *.db-wal
+*.bak
 
 # Storage captures
 backend/storage/

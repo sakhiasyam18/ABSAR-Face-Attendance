@@ -1,7 +1,7 @@
 import hashlib
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -59,22 +59,32 @@ def login(req: LoginRequest, db: Session = Depends(get_db)):
     raw_input = req.email.strip().lower()
     clean_prefix = raw_input.split('@')[0].split('.')[0]
     
-    # Fleksibel: cari berdasarkan Email, NIM / NIP, atau variasi domain kampus
+    # Fleksibel: cari berdasarkan Email, NIM / NIP, Nama Lengkap, atau variasi domain kampus
     user = db.query(User).filter(
         or_(
             User.email == raw_input,
             User.identifier == raw_input,
+            func.lower(User.full_name) == raw_input,
             User.email == f"{raw_input}@um.ac.id",
             User.email == f"{raw_input}.um.ac.id",
+            User.email == f"{raw_input}@students.um.ac.id",
             User.email == raw_input.replace('@', '.'),
             User.email == raw_input.replace('.um.ac.id', '@um.ac.id'),
             User.email.ilike(f"{clean_prefix}%")
         )
     ).first()
 
+    if not user:
+        # Coba cari berdasarkan awalan nama (nama depan / panggilan)
+        user = db.query(User).filter(User.full_name.ilike(f"{raw_input}%")).first()
+
+    if not user:
+        # Coba cari nama yang mengandung kata kunci
+        user = db.query(User).filter(User.full_name.ilike(f"%{raw_input}%")).first()
+
     # Convenience check: if DB is fresh and user logs in as default Ashar Pakawaru dosen,
     # auto-provision this verified dosen account so the user can immediately test!
-    if not user and email == "ashar.pakawaru@um.ac.id":
+    if not user and raw_input == "ashar.pakawaru@um.ac.id":
         user = User(
             email="ashar.pakawaru@um.ac.id",
             password_hash=_hash_password(req.password if req.password else "password123"),
